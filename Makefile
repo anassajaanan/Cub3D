@@ -9,8 +9,8 @@ OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 # Compiler and Flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Imlx
-LIB_FLAGS = -L./lib/ -lft -L./mlx -lmlx -framework OpenGL -framework AppKit
-INCLUDES = -I./include -I./lib/include -I./mlx
+LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
+INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
 AR = ar -rcs
 RM = rm -fr
 
@@ -35,10 +35,10 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)Building $(NAME) $(ROCKET)$(RESET)"
 	@echo "   $(BOLD)$(CYAN)🎯 libft.a $(RESET)"
-	@make -C ./lib
+	@make -C ./lib/libft
 	@echo "\n   $(BOLD)$(CYAN)⛳️ libmlx.a $(RESET)"
 	@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET)"
-	@make -s -C ./mlx
+	@make -s -C ./lib/mlx
 	@sleep 3
 	@echo "      $(BOLD)✅ libmlx.a created successfully!$(RESET)"
 	@echo "\n   ⌛ Compiling $(NAME) ..." && sleep 1
@@ -57,9 +57,9 @@ $(OBJS_DIR):
 clean:
 	@echo "$(YELLOW)Cleaning project $(RESET)"
 	@echo "\n   $(BOLD)🚿 Cleaning libft.a ...$(RESET_COLOR)"
-	@make clean -C ./lib
+	@make clean -C ./lib/libft
 	@echo "   $(BOLD)🧹 Cleaning libmlx.a ...$(RESET_COLOR)"
-	@make clean -C ./mlx
+	@make clean -C ./lib/mlx
 	@echo "   $(BOLD)🗑️  Cleaning $(NAME) ...$(RESET_COLOR)"
 	@$(RM) $(OBJS_DIR)
 	@echo "\n$(GREEN)Project cleaned! ✨$(RESET)"
@@ -67,7 +67,7 @@ clean:
 fclean: clean
 	@echo "\n$(YELLOW)Force cleaning project$(RESET)"
 	@echo "\n   $(BOLD)$(RED)🗑️ Force cleaning libft.a ...$(RESET)"
-	@make fclean -C ./lib
+	@make fclean -C ./lib/libft
 	@echo "   $(BOLD)$(RED)🗑️ Force cleaning $(NAME) ...$(RESET)"
 	@$(RM) $(NAME)
 	@echo "\n$(GREEN)Project forcefully cleaned! ✨$(RESET)"
