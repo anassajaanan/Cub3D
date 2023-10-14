@@ -37,9 +37,9 @@ GREEN			=	\033[92m
 all: $(NAME)
 
 $(NAME): $(OBJS_LIBFT) $(OBJS_PRINTF) $(OBJS_PRINTF_FD) $(OBJS_GNL)
-	@echo "$(BOLD)🔨 Building $(NAME) ...$(RESET_COLOR)"
+	@echo "      $(BOLD)🔨 Building $(NAME) ...$(RESET_COLOR)"
 	@$(AR) $(NAME) $(OBJS_LIBFT) $(OBJS_PRINTF) $(OBJS_PRINTF_FD) $(OBJS_GNL)
-	@echo "$(BOLD)$(GREEN)✅ $(NAME) created successfully!$(RESET_COLOR)"
+	@echo "      $(BOLD)✅ $(NAME) created successfully!$(RESET_COLOR)"
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
