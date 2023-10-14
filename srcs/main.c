@@ -3,7 +3,7 @@
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 512
 #define PLAYER_SIZE 20
-#define MOVE_SPEED 20
+#define MOVE_SPEED 30
 #define MAP_COLS 8
 #define MAP_ROWS 8
 #define TAIL_SIZE 64
@@ -30,18 +30,32 @@ typedef struct s_params
 	int		player_y;
 }				t_params;
 
+void clear_player_position(t_params *params);
+
 int	handle_keypress(int keycode, t_params *params)
 {
 	if (keycode == 53)
 		exit(0);
 	if (keycode == 13)
+	{
+		clear_player_position(params);
 		params->player_y -= MOVE_SPEED;
+	}
 	else if (keycode == 0)
+	{
+		clear_player_position(params);
 		params->player_x -= MOVE_SPEED;
+	}
 	else if (keycode == 1)
+	{
+		clear_player_position(params);
 		params->player_y += MOVE_SPEED;
+	}
 	else if (keycode == 2)
+	{
+		clear_player_position(params);
 		params->player_x += MOVE_SPEED;
+	}
 	return (0);
 }
 
@@ -87,9 +101,21 @@ void	draw_map(t_params *params)
 	}
 }
 
+void clear_player_position(t_params *params)
+{
+	for (int i = 0; i < PLAYER_SIZE; i++)
+    {
+        for (int j = 0; j < PLAYER_SIZE; j++)
+        {
+            mlx_pixel_put(params->mlx, params->win, params->player_x + i, params->player_y + j, 0x000000);
+        }
+    }
+}
+
 int	update_window(t_params *params)
 {
 	// mlx_clear_window(params->mlx, params->win);
+	
 	draw_player(params);
 	return (0);
 }
@@ -106,6 +132,7 @@ int main(void)
 	params.player_y = WIN_HEIGHT / 2 - PLAYER_SIZE / 2;
 
 	draw_map(&params);
+
 	mlx_key_hook(params.win, handle_keypress, &params);
 	mlx_loop_hook(params.mlx, update_window, &params);
 
