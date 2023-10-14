@@ -46,11 +46,9 @@ $(OBJ_DIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@echo "$(BOLD)🧹 Cleaning object files ...$(RESET_COLOR)"
 	@$(RM) -r $(OBJ_DIR)
 
 fclean: clean
-	@echo "$(BOLD)🗑️  Cleaning $(NAME) ...$(RESET_COLOR)"
 	@$(RM) $(NAME)
 
 re: fclean all

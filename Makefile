@@ -1,55 +1,49 @@
-NAME      = cub3d
+# Target and File Variables
+NAME = cub3d
+SRCS_DIR = srcs
+OBJS_DIR = objs
+SRCS = main.c
+SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
+OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
-# Define ANSI color codes
+# Compiler and Flags
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -Imlx
+LIB_FLAGS = -L./lib/ -lft -L./mlx -lmlx -framework OpenGL -framework AppKit
+INCLUDES = -I./include -I./lib/include -I./mlx
+AR = ar -rcs
+RM = rm -fr
+
+# ANSI Color Codes
 RED = \033[1;31m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m
-BOLD =	\033[1m
+BOLD = \033[1m
+CYAN = \033[1;36m
+MAGENTA = \033[1;35m
 RESET = \033[0m
-LOADING_CHARS = "-\|/"
 
-# Define emojis
+# Emojis
 ROCKET = 🚀
 TRASH = 🗑️
 CLEAN = 🧹
 
-CC        = cc
-CFLAGS    = -Wall -Wextra -Werror -Imlx
-LIB_FLAGS = -L./lib/ -lft -L./mlx -lmlx -framework OpenGL -framework AppKit
-INCLUDES  = -I./include -I./lib/include -I./mlx
-AR        = ar -rcs
-RM        = rm -fr
-
-SRCS_DIR  = srcs
-OBJS_DIR  = objs
-
-# List of source files
-SRCS      = main.c
-SRCS      := $(addprefix $(SRCS_DIR)/, $(SRCS))
-
-# List of object files
-OBJS      = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
-
-# Default rule
+# Default Target
 all: $(NAME)
 
-
-
-$(NAME):	$(OBJS)
+# Build Target
+$(NAME): $(OBJS)
 	@echo "$(YELLOW)Building $(NAME) $(ROCKET)$(RESET)"
-	@echo "   $(YELLOW)🎯 libft.a $(RESET)"
+	@echo "   $(BOLD)$(CYAN)🎯 libft.a $(RESET)"
 	@make -C ./lib
-	@echo "   $(YELLOW)🎯 libmlx.a $(RESET)"
-	@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET_COLOR)"
+	@echo "\n   $(BOLD)$(CYAN)⛳️ libmlx.a $(RESET)"
+	@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET)"
 	@make -s -C ./mlx
 	@sleep 3
-	@echo "      $(BOLD)✅ libmlx.a created successfully!$(RESET_COLOR)"
-	@echo "   ⌛ Compiling $(NAME) ..." && sleep 1
+	@echo "      $(BOLD)✅ libmlx.a created successfully!$(RESET)"
+	@echo "\n   ⌛ Compiling $(NAME) ..." && sleep 1
 	@$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(LIB_FLAGS) -o $(NAME)
-	@echo "$(GREEN)🎉 $(NAME) built successfully!$(RESET)"
-
-
-
+	@echo "$(GREEN)Cub3D Built Successfully!$(RESET) 🎉"
 
 # Rule to build object files
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
@@ -59,21 +53,29 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
+# Cleaning Targets
 clean:
-	@echo "$(YELLOW)Cleaning project $(CLEAN)$(RESET)"
+	@echo "$(YELLOW)Cleaning project $(RESET)"
+	@echo "\n   $(BOLD)🚿 Cleaning libft.a ...$(RESET_COLOR)"
 	@make clean -C ./lib
+	@echo "   $(BOLD)🧹 Cleaning libmlx.a ...$(RESET_COLOR)"
 	@make clean -C ./mlx
+	@echo "   $(BOLD)🗑️  Cleaning $(NAME) ...$(RESET_COLOR)"
 	@$(RM) $(OBJS_DIR)
-	@echo "$(GREEN)Project cleaned!$(RESET)"
+	@echo "\n$(GREEN)Project cleaned! ✨$(RESET)"
 
 fclean: clean
-	@echo "$(YELLOW)Force cleaning project $(TRASH)$(RESET)"
+	@echo "\n$(YELLOW)Force cleaning project$(RESET)"
+	@echo "\n   $(BOLD)$(RED)🗑️ Force cleaning libft.a ...$(RESET)"
 	@make fclean -C ./lib
+	@echo "   $(BOLD)$(RED)🗑️ Force cleaning $(NAME) ...$(RESET)"
 	@$(RM) $(NAME)
-	@echo "$(GREEN)Project forcefully cleaned!$(RESET)"
+	@echo "\n$(GREEN)Project forcefully cleaned! ✨$(RESET)"
 
-# Re rule
-re: fclean all
+# Restarting Target
+re:
+	@echo "$(BOLD)$(MAGENTA)Force cleaning $(NAME) ♻️$(RESET)"
+	@make -s fclean > /dev/null
+	@make all
 
 .PHONY: all clean fclean re
-
