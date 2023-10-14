@@ -54,16 +54,6 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
-# # Clean rule
-# clean:
-# 	@make clean -C ./lib
-# 	@make clean -C ./mlx
-# 	@$(RM) $(OBJS_DIR)
-
-# # Fclean rule
-# fclean: clean
-# 	@make fclean -C ./lib
-# 	@$(RM) $(NAME)
 clean:
 	@echo "$(YELLOW)Cleaning project $(CLEAN)$(RESET)"
 	@make clean -C ./lib
