@@ -6,6 +6,7 @@ GREEN = \033[1;32m
 YELLOW = \033[1;33m
 BOLD =	\033[1m
 RESET = \033[0m
+LOADING_CHARS = "-\|/"
 
 # Define emojis
 ROCKET = 🚀
@@ -33,16 +34,20 @@ OBJS      = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 all: $(NAME)
 
 
+
 $(NAME):	$(OBJS)
 	@echo "$(YELLOW)Building $(NAME) $(ROCKET)$(RESET)"
 	@echo "   $(YELLOW)🎯 libft.a $(RESET)"
 	@make -C ./lib
 	@echo "   $(YELLOW)🎯 libmlx.a $(RESET)"
-	@echo "      $(BOLD)🔨 Building libmlx.a ...$(RESET_COLOR)"
+	@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET_COLOR)"
 	@make -s -C ./mlx
+	@sleep 3
 	@echo "      $(BOLD)✅ libmlx.a created successfully!$(RESET_COLOR)"
+	@echo "   ⌛ Compiling $(NAME) ..." && sleep 1
 	@$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(LIB_FLAGS) -o $(NAME)
-	@echo "$(GREEN)✅ $(NAME) built successfully!$(RESET)"
+	@echo "$(GREEN)🎉 $(NAME) built successfully!$(RESET)"
+
 
 
 
