@@ -7,6 +7,7 @@
 #define MAP_COLS 8
 #define MAP_ROWS 8
 #define TAIL_SIZE 64
+#define pi 3.14159265358
 
 
 
@@ -26,11 +27,16 @@ typedef struct s_params
 {
 	void	*mlx;
 	void	*win;
-	int		player_x;
-	int		player_y;
+	float		player_x;
+	float		player_y;
+	float		player_dx;
+	float		player_dy;
+	float		player_a;
+
 }				t_params;
 
 void clear_player_position(t_params *params);
+void	draw_line(t_params *params, int color);
 
 int	handle_keypress(int keycode, t_params *params)
 {
@@ -38,23 +44,41 @@ int	handle_keypress(int keycode, t_params *params)
 		exit(0);
 	if (keycode == 13)
 	{
+		draw_line(params, 0x000000);
 		clear_player_position(params);
-		params->player_y -= MOVE_SPEED;
+		// params->player_y -= MOVE_SPEED;
+		params->player_x += params->player_dx;
+		params->player_y += params->player_dy;
 	}
 	else if (keycode == 0)
 	{
+		draw_line(params, 0x000000);
 		clear_player_position(params);
-		params->player_x -= MOVE_SPEED;
+		// params->player_x -= MOVE_SPEED;
+		params->player_a -= 0.1;
+		if (params->player_a < 0)
+			params->player_a += 2 * pi;
+		params->player_dx = cos(params->player_a) * 50;
+		params->player_dy = sin(params->player_a) * 50;
 	}
 	else if (keycode == 1)
 	{
+		draw_line(params, 0x000000);
 		clear_player_position(params);
-		params->player_y += MOVE_SPEED;
+		// params->player_y += MOVE_SPEED;
+		params->player_x -= params->player_dx;
+		params->player_y -= params->player_dy;
 	}
 	else if (keycode == 2)
 	{
+		draw_line(params, 0x000000);
 		clear_player_position(params);
-		params->player_x += MOVE_SPEED;
+		// params->player_x += MOVE_SPEED;
+		params->player_a += 0.1;
+		if (params->player_a > 2 * pi)
+			params->player_a -= 2 * pi;
+		params->player_dx = cos(params->player_a) * 50;
+		params->player_dy = sin(params->player_a) * 50;
 	}
 	return (0);
 }
@@ -77,9 +101,9 @@ void	draw_map_tail(t_params *params, int col, int row)
 
 	x = col * TAIL_SIZE;
 	y = row * TAIL_SIZE;
-	for (int i = 0; i < TAIL_SIZE; i++)
+	for (int i = 0; i < TAIL_SIZE - 1; i++)
 	{
-		for (int j = 0; j < TAIL_SIZE; j++)
+		for (int j = 0; j < TAIL_SIZE - 1; j++)
 		{
 			mlx_pixel_put(params->mlx, params->win, x + i, y + j, 0xFFFFFF);
 		}
@@ -112,11 +136,43 @@ void clear_player_position(t_params *params)
     }
 }
 
+void	draw_line(t_params *params, int color)
+{
+	int	x0 = params->player_x + PLAYER_SIZE / 2;
+	int	y0 = params->player_y + PLAYER_SIZE / 2;
+	int	x1 = params->player_x + params->player_dx;
+	int	y1 = params->player_y + params->player_dy;
+
+	int	dX = abs(x1 - x0);
+	int	sX = x0 < x1 ? 1 : -1;
+	int	dY = -abs(y1 - y0);
+	int	sY = y0 < y1 ? 1 : -1;
+	int	err = dX + dY;
+	int	e2;
+
+	while (x0 != x1 || y0 != y1)
+	{
+		mlx_pixel_put(params->mlx, params->win, x0, y0, color); // Set the pixel
+
+		e2 = 2 * err;
+		if (e2 >= dY)
+		{
+			err += dY;
+			x0 += sX;
+		}
+		if (e2 <= dX)
+		{
+			err += dX;
+			y0 += sY;
+		}
+	}
+}
+
 int	update_window(t_params *params)
 {
 	// mlx_clear_window(params->mlx, params->win);
-	
 	draw_player(params);
+	draw_line(params, 0x0000FF);
 	return (0);
 }
 
@@ -128,8 +184,14 @@ int main(void)
 	params.mlx = mlx_init();
 	params.win = mlx_new_window(params.mlx, WIN_WIDTH, WIN_HEIGHT, "Hello world!");
 	
-	params.player_x = WIN_WIDTH / 2 - PLAYER_SIZE / 2;
-	params.player_y = WIN_HEIGHT / 2 - PLAYER_SIZE / 2;
+	// params.player_x = WIN_WIDTH / 2 - PLAYER_SIZE / 2;
+	// params.player_y = WIN_HEIGHT / 2 - PLAYER_SIZE / 2;
+	params.player_x = 300;
+	params.player_y = 300;
+	params.player_dx = cos(params.player_a) * 50;
+	params.player_dy = sin(params.player_a) * 50;
+	params.player_a = 0;
+
 
 	draw_map(&params);
 
