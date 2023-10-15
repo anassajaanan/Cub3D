@@ -8,6 +8,7 @@
 #define MAP_ROWS 8
 #define TAIL_SIZE 64
 #define pi 3.14159265358
+#define X 50
 
 
 
@@ -58,8 +59,8 @@ int	handle_keypress(int keycode, t_params *params)
 		params->player_a -= 0.1;
 		if (params->player_a < 0)
 			params->player_a += 2 * pi;
-		params->player_dx = cos(params->player_a) * 50;
-		params->player_dy = sin(params->player_a) * 50;
+		params->player_dx = cos(params->player_a) * X;
+		params->player_dy = sin(params->player_a) * X;
 	}
 	else if (keycode == 1)
 	{
@@ -77,8 +78,8 @@ int	handle_keypress(int keycode, t_params *params)
 		params->player_a += 0.1;
 		if (params->player_a > 2 * pi)
 			params->player_a -= 2 * pi;
-		params->player_dx = cos(params->player_a) * 50;
-		params->player_dy = sin(params->player_a) * 50;
+		params->player_dx = cos(params->player_a) * X;
+		params->player_dy = sin(params->player_a) * X;
 	}
 	return (0);
 }
@@ -168,6 +169,24 @@ void	draw_line(t_params *params, int color)
 	}
 }
 
+void draw_line1(void *mlx, void *win, int beginX, int beginY, int endX, int endY, int color)
+{
+	double deltaX = endX - beginX;
+	double deltaY = endY - beginY;
+	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	deltaX /= pixels;
+	deltaY /= pixels;
+	double pixelX = beginX;
+	double pixelY = beginY;
+	while (pixels)
+	{
+		mlx_pixel_put(mlx, win, pixelX, pixelY, color);
+		pixelX += deltaX;
+		pixelY += deltaY;
+		--pixels;
+	}
+}
+
 int	update_window(t_params *params)
 {
 	// mlx_clear_window(params->mlx, params->win);
@@ -188,8 +207,8 @@ int main(void)
 	// params.player_y = WIN_HEIGHT / 2 - PLAYER_SIZE / 2;
 	params.player_x = 300;
 	params.player_y = 300;
-	params.player_dx = cos(params.player_a) * 50;
-	params.player_dy = sin(params.player_a) * 50;
+	params.player_dx = cos(params.player_a) * X;
+	params.player_dy = sin(params.player_a) * X;
 	params.player_a = 0;
 
 
