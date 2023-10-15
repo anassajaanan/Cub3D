@@ -10,6 +10,9 @@
 #define pi 3.14159265358
 #define X 50
 
+#define P2 pi / 2
+#define P3 3 * pi / 2
+
 
 
 
@@ -187,11 +190,129 @@ void draw_line1(void *mlx, void *win, int beginX, int beginY, int endX, int endY
 	}
 }
 
+float dist(float ax, float ay, float bx, float by, float ang)
+{
+	(void)ang;
+	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
+}
+
+void	draw_rays(t_params *params)
+{
+	int	r, mx, my, mp, dof;
+	float rx, ry, ra, xo, yo;
+	
+	ra = params->player_a;
+	for (r = 0; r < 1; r++)
+	{
+		// HORIZONTAL RAY-GRID INTERSECTION CODE
+		dof = 0;
+		float disH = 1000000, hx = params->player_x, hy = params->player_y;
+		float aTan = -1 / tan(ra);
+		if (ra > pi)
+		{
+			ry = (((int)params->player_y >> 6) << 6) - 0.0001;
+			rx = (params->player_y - ry) * aTan + params->player_x;
+			yo = -64;
+			xo = -yo * aTan;
+		}
+		if (ra < pi)
+		{
+			ry = (((int)params->player_y >> 6) << 6) + 64;
+			rx = (params->player_y - ry) * aTan + params->player_x;
+			yo = 64;
+			xo = -yo * aTan;
+		}
+		if (ra == 0 || ra == pi)
+		{
+			rx = params->player_x;
+			ry = params->player_y;
+			dof = 8;
+		}
+		while (dof < 8)
+		{
+			mx = (int)(rx) >> 6;
+			my = (int)(ry) >> 6;
+			mp = my * MAP_ROWS + mx;
+			if (mp > 0 && mp < MAP_ROWS * MAP_COLS && map[mp] == 1)
+			{
+				dof = 8;
+				hx = rx;
+				hy = ry;
+				disH = dist(params->player_x, params->player_y, hx, hy, ra); 
+			}
+			else
+			{
+				rx += xo;
+				ry += yo;
+				dof += 1;
+			}
+		}
+		// draw_line1(params->mlx, params->win, params->player_x, params->player_y, rx, ry, 0x008000);
+
+		// VERTICAL RAY-GRID INTERSECTION CODE
+		dof = 0;
+		float disV = 1000000, vx = params->player_x, vy = params->player_y;
+		float nTan = -tan(ra);
+		if (ra > P2 && ra < P3) // looking left
+		{
+			rx = (((int)params->player_x >> 6) << 6) - 0.0001;
+			ry = (params->player_x - rx) * nTan + params->player_y;
+			xo = -64;
+			yo = -xo * nTan;
+		}
+		if (ra < P2 || ra > P3) // looking right
+		{
+			rx = (((int)params->player_x >> 6) << 6) + 64;
+			ry = (params->player_x - rx) * nTan + params->player_y;
+			xo = 64;
+			yo = -xo * nTan;
+		}
+		if (ra == 0 || ra == pi)
+		{
+			rx = params->player_x;
+			ry = params->player_y;
+			dof = 8;
+		}
+		while (dof < 8)
+		{
+			mx = (int)(rx) >> 6;
+			my = (int)(ry) >> 6;
+			mp = my * MAP_ROWS + mx;
+			if (mp > 0 && mp < MAP_ROWS * MAP_COLS && map[mp] == 1)
+			{
+				dof = 8;
+				vx = rx;
+				vy = ry;
+				disV = dist(params->player_x, params->player_y, vx, vy, ra);
+			}
+			else
+			{
+				rx += xo;
+				ry += yo;
+				dof += 1;
+			}
+		}
+		if (disV < disH)
+		{
+			rx = vx;
+			ry = vy;
+		}
+		if (disH < disV)
+		{
+			rx = hx;
+			ry = hy;
+		}
+		draw_line1(params->mlx, params->win, params->player_x + PLAYER_SIZE / 2, params->player_y + PLAYER_SIZE / 2, rx, ry, 0xFF0000);
+	}
+
+}
+
 int	update_window(t_params *params)
 {
 	// mlx_clear_window(params->mlx, params->win);
 	draw_player(params);
 	draw_line(params, 0x0000FF);
+	draw_rays(params);
 	return (0);
 }
 
@@ -205,8 +326,8 @@ int main(void)
 	
 	// params.player_x = WIN_WIDTH / 2 - PLAYER_SIZE / 2;
 	// params.player_y = WIN_HEIGHT / 2 - PLAYER_SIZE / 2;
-	params.player_x = 300;
-	params.player_y = 300;
+	params.player_x = 220;
+	params.player_y = 220;
 	params.player_dx = cos(params.player_a) * X;
 	params.player_dy = sin(params.player_a) * X;
 	params.player_a = 0;
