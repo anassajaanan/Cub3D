@@ -51,7 +51,7 @@ int	handle_keypress(int keycode, t_params *params)
 	if (keycode == 13)
 	{
 		draw_line(params, 0x000000);
-		delete_rays(params);
+		// delete_rays(params);
 		clear_player_position(params);
 		// params->player_y -= MOVE_SPEED;
 		params->player_x += params->player_dx;
@@ -60,7 +60,7 @@ int	handle_keypress(int keycode, t_params *params)
 	else if (keycode == 0)
 	{
 		draw_line(params, 0x000000);
-		delete_rays(params);
+		// delete_rays(params);
 		clear_player_position(params);
 		// params->player_x -= MOVE_SPEED;
 		params->player_a -= 0.1;
@@ -72,7 +72,7 @@ int	handle_keypress(int keycode, t_params *params)
 	else if (keycode == 1)
 	{
 		draw_line(params, 0x000000);
-		delete_rays(params);
+		// delete_rays(params);
 		clear_player_position(params);
 		// params->player_y += MOVE_SPEED;
 		params->player_x -= params->player_dx;
@@ -81,7 +81,7 @@ int	handle_keypress(int keycode, t_params *params)
 	else if (keycode == 2)
 	{
 		draw_line(params, 0x000000);
-		delete_rays(params);
+		// delete_rays(params);
 		clear_player_position(params);
 		// params->player_x += MOVE_SPEED;
 		params->player_a += 0.1;
@@ -213,7 +213,7 @@ void	draw_rays(t_params *params)
 		ra += 2 * pi;
 	if (ra > 2 * pi)
 		ra -= 2 * pi;
-	for (r = 0; r < 60; r++)
+	for (r = 0; r < 30; r++)
 	{
 		// HORIZONTAL RAY-GRID INTERSECTION CODE
 		dof = 0;
@@ -320,19 +320,19 @@ void	draw_rays(t_params *params)
 		draw_line1(params->mlx, params->win, params->player_x + PLAYER_SIZE / 2, params->player_y + PLAYER_SIZE / 2, rx, ry, 0xFF0000);
 		
 		
-		// Draw 3D walls
-		float lineH = (TAIL_SIZE * 320) / disT;
-		if (lineH > 320)
-			lineH = 320;
-		float lineO = 160 - lineH / 2;
+		// // Draw 3D walls
+		// float lineH = (TAIL_SIZE * 320) / disT;
+		// if (lineH > 320)
+		// 	lineH = 320;
+		// float lineO = 160 - lineH / 2;
 
-		// width is 8
-		for (int i = 0; i < 8; i++)
-		{
-			draw_line1(params->mlx, params->win, r * 8 + 530 + i, lineO, r * 8 + 530 + i, lineH + lineO, wall_color);
-		}
+		// // width is 8
+		// for (int i = 0; i < 8; i++)
+		// {
+		// 	draw_line1(params->mlx, params->win, r * 8 + 530 + i, lineO, r * 8 + 530 + i, lineH + lineO, wall_color);
+		// }
 
-		ra += DR;
+		ra += 2 * DR;
 		if (ra < 0)
 			ra += 2 * pi;
 		if (ra > 2 * pi)
@@ -351,7 +351,7 @@ void	delete_rays(t_params *params)
 		ra += 2 * pi;
 	if (ra > 2 * pi)
 		ra -= 2 * pi;
-	for (r = 0; r < 60; r++)
+	for (r = 0; r < 30; r++)
 	{
 		// HORIZONTAL RAY-GRID INTERSECTION CODE
 		dof = 0;
@@ -456,24 +456,24 @@ void	delete_rays(t_params *params)
 		draw_line1(params->mlx, params->win, params->player_x + PLAYER_SIZE / 2, params->player_y + PLAYER_SIZE / 2, rx, ry, 0x000000);
 		
 		
-		// Draw 3D walls
-		float ca = params->player_a - ra;
-		if (ca < 0)
-			ca += 2 * pi;
-		if (ca > 2 * pi)
-			ca -= 2 * pi;
-		disT = disT * cos(ca);
-		float lineH = (TAIL_SIZE * 320) / disT;
-		if (lineH > 320)
-			lineH = 320;
-		float lineO = 160 - lineH / 2;
+		// // Draw 3D walls
+		// float ca = params->player_a - ra;
+		// if (ca < 0)
+		// 	ca += 2 * pi;
+		// if (ca > 2 * pi)
+		// 	ca -= 2 * pi;
+		// disT = disT * cos(ca);
+		// float lineH = (TAIL_SIZE * 320) / disT;
+		// if (lineH > 320)
+		// 	lineH = 320;
+		// float lineO = 160 - lineH / 2;
 
-		for (int i = 0; i < 8; i++)
-		{
-			draw_line1(params->mlx, params->win, r * 8 + 530 + i, lineO, r * 8 + 530 + i, lineH + lineO, 0x0000F00);
-		}
+		// for (int i = 0; i < 8; i++)
+		// {
+		// 	draw_line1(params->mlx, params->win, r * 8 + 530 + i, lineO, r * 8 + 530 + i, lineH + lineO, 0x0000F00);
+		// }
 
-		ra += DR;
+		ra += 2 * DR;
 		if (ra < 0)
 			ra += 2 * pi;
 		if (ra > 2 * pi)
