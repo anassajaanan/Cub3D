@@ -206,6 +206,7 @@ void	draw_rays(t_params *params)
 {
 	int	r, mx, my, mp, dof;
 	float rx, ry, ra, xo, yo, disT;
+	int wall_color;
 	
 	ra = params->player_a - DR * 30;
 	if (ra < 0)
@@ -307,12 +308,14 @@ void	draw_rays(t_params *params)
 			rx = vx;
 			ry = vy;
 			disT = disV;
+			wall_color = 0xE60000;
 		}
 		if (disH < disV)
 		{
 			rx = hx;
 			ry = hy;
 			disT = disH;
+			wall_color = 0xb2FF00;
 		}
 		draw_line1(params->mlx, params->win, params->player_x + PLAYER_SIZE / 2, params->player_y + PLAYER_SIZE / 2, rx, ry, 0xFF0000);
 		
@@ -326,7 +329,7 @@ void	draw_rays(t_params *params)
 		// width is 8
 		for (int i = 0; i < 8; i++)
 		{
-			draw_line1(params->mlx, params->win, r * 8 + 530 + i, lineO, r * 8 + 530 + i, lineH + lineO, 0x00FF00);
+			draw_line1(params->mlx, params->win, r * 8 + 530 + i, lineO, r * 8 + 530 + i, lineH + lineO, wall_color);
 		}
 
 		ra += DR;
@@ -454,6 +457,12 @@ void	delete_rays(t_params *params)
 		
 		
 		// Draw 3D walls
+		float ca = params->player_a - ra;
+		if (ca < 0)
+			ca += 2 * pi;
+		if (ca > 2 * pi)
+			ca -= 2 * pi;
+		disT = disT * cos(ca);
 		float lineH = (TAIL_SIZE * 320) / disT;
 		if (lineH > 320)
 			lineH = 320;
