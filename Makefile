@@ -2,12 +2,13 @@
 NAME = cub3d
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS = main.c
+SRCS = main.c line.c point.c
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
 # Compiler and Flags
 CC = cc
+# CFLAGS = -Wall -Wextra -Werror -Imlx -g3 -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror -Imlx
 LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
 INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
