@@ -9,7 +9,8 @@ OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 # Compiler and Flags
 CC = cc
 # CFLAGS = -Wall -Wextra -Werror -Imlx -g3 -fsanitize=address
-CFLAGS = -Wall -Wextra -Werror -Imlx
+# CFLAGS = -Wall -Wextra -Werror -Imlx
+CFLAGS = -Imlx
 LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
 INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
 AR = ar -rcs

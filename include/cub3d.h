@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/10/23 10:43:59 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:38:36 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,51 @@
 # include "../lib/libft/include/libft.h"
 # include "../lib/mlx/mlx.h"
 
+
 typedef struct s_point
 {
 	int	x;
-	int y;
-}		t_point;
+	int	y;
+}	t_point;
 
-typedef struct s_float_point
+typedef struct s_fpoint
 {
 	float	x;
 	float	y;
-}			t_float_point;
+}			t_fpoint;
 
 typedef struct s_player
 {
-	float	x;
-	float	y;
-	float	dx;
-	float	dy;
-	float	angle;
+	double	x;
+	double	y;
+	double	dx;
+	double	dy;
+	double	direction;
 }			t_player;
+
+typedef struct s_camera
+{
+	int		resolution;
+	double	focal_length;
+	double	range;
+}			t_camera;
+
+typedef struct s_ray
+{
+	double	x;
+	double	y;
+	double	distance;
+	double	direction;
+}			t_ray;
 
 typedef struct s_params
 {
 	void		*mlx;
 	void		*win;
 	t_player	player;
-}			t_params;
+	t_camera	camera;
+}				t_params;
+
 
 // point.c
 t_point	init_point(int x, int y);

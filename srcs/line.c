@@ -4,11 +4,11 @@
 
 void	dda(t_params *params, t_point p1, t_point p2, int color) // Digital differential analyzer Algorithm
 {
-	int				i;
-	t_float_point	p;
-	int				steps;
-	t_point			delta;
-	t_float_point	increment;
+	int			i;
+	t_fpoint	p;
+	int			steps;
+	t_point		delta;
+	t_fpoint	increment;
 
 	i = 0;
 	p.x = p1.x;
