@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/10/25 18:38:36 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:47:08 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include "../lib/libft/include/libft.h"
 # include "../lib/mlx/mlx.h"
 
+#define HORIZONTAL 0
+#define VERTICAL 1
 
 typedef struct s_point
 {
@@ -62,6 +64,8 @@ typedef struct s_ray
 	double	y;
 	double	distance;
 	double	direction;
+	int		color;
+	int 	hit;
 }			t_ray;
 
 typedef struct s_params
@@ -70,6 +74,9 @@ typedef struct s_params
 	void		*win;
 	t_player	player;
 	t_camera	camera;
+	int			bits_per_pixel;
+	int			size_line;
+	int			endian;
 }				t_params;
 
 

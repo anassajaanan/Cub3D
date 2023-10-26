@@ -5,15 +5,28 @@
 #define MOVEMENT_SPEED 25
 #define ROTATION_SPEED 0.1
 #define TILE_SIZE 64
+#define TEXTURE_SIZE 64
 #define ROWS 16
 #define COLS 16
 #define PLAYER_SIZE 10
 #define PLAYER_COLOR 0xFF0000
+#include "/Users/aajaanan/Desktop/project/Textures/wall1.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall2.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall3.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall4.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall5.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall6.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall7.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall8.ppm"
+
+
+
+
 
 char	*map[16] = {
 	"1111111111111111",
 	"1000000000000001",
-	"1000000000000001",
+	"1000111111110001",
 	"1000000000000001",
 	"1000000000000001",
 	"1000000000000001",
@@ -40,7 +53,7 @@ void	init_player(t_player *player)
 
 void	init_camera(t_camera *camera)
 {
-	camera->resolution = 640;
+	camera->resolution = 1048;
 	camera->focal_length = 0.8;
 	camera->range = 16;
 }
@@ -203,15 +216,21 @@ t_ray	ray_intersection(t_params *params, double angle)
 		ray.x = horizontal.x;
 		ray.y = horizontal.y;
 		ray.distance = horizontal_distance;
+		ray.color = 0x7752FE;
+		ray.hit = HORIZONTAL;
 	}
 	else
 	{
 		ray.x = vertical.x;
 		ray.y = vertical.y;
 		ray.distance = vertical_distance;
+		ray.color = 0x8E8FFA;
+		ray.hit = VERTICAL;
 	}
 	return (ray);
 }
+
+
 
 void	cast_rays(t_params *params)
 {
@@ -236,7 +255,78 @@ void	cast_rays(t_params *params)
 		int half_width = WINDOW_WIDTH / 2;
 		double wall_x = half_width + column * column_width;
 		double wall_y = (WINDOW_HEIGHT / 2) - (wall_height / 2);
-		draw_line(params, init_point(wall_x, wall_y), init_point(wall_x, wall_y + wall_height), 0xFF00FF);
+	
+		// draw_line(params, init_point(wall_x, wall_y), init_point(wall_x, wall_y + wall_height), ray.color);
+		
+		// Render the wall textures
+		
+		// double texture_x = (ray.x - (int)ray.x) * TEXTURE_SIZE;
+		// double texture_step = TEXTURE_SIZE / wall_height;
+		// double texture_position = 0;
+
+		// for (int y = 0; y < wall_height; y++)
+		// {
+		// 	// int texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
+		// 	int texture_y = (int)texture_position;
+		// 	int pixel = (int)texture_y * TEXTURE_SIZE + (int)texture_x;
+		// 	int red = wall2[pixel * 3];
+		// 	int green = wall2[pixel * 3 + 1];
+		// 	int blue = wall2[pixel * 3 + 2];
+		// 	int hex_color = (red << 16) | (green << 8) | blue;
+		// 	mlx_pixel_put(params->mlx, params->win, wall_x, wall_y + y, hex_color);
+		// 	texture_position += texture_step;
+		// }
+		double texture_x, texture_y;
+		int	*wall_image;
+		if (ray.hit == HORIZONTAL)
+		{
+			texture_x = (int)ray.x % TILE_SIZE;
+			if (ray.direction > M_PI)
+				texture_x = TILE_SIZE - texture_x - 1;
+			wall_image = wall2;
+		}
+		else
+		{
+			texture_x = (int)ray.y % TILE_SIZE;
+			if (ray.direction > M_PI / 2 && ray.direction < 3 * M_PI / 2)
+				texture_x = TILE_SIZE - texture_x - 1;
+			wall_image = wall8;
+		}
+		double texture_step = TEXTURE_SIZE / wall_height;
+		double texture_position = 0;
+		for (int y = 0; y < wall_height; y++)
+		{
+			texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
+			int pixel = (int)texture_y * TEXTURE_SIZE + (int)texture_x;
+
+			int red = wall_image[pixel * 3];
+			int green = wall_image[pixel * 3 + 1];
+			int blue = wall2[pixel * 3 + 2];
+			
+
+			// Shading
+            // double shading_factor = 1.0 - (distance / 1024.0);
+            // shading_factor = (shading_factor < 0.0) ? 0.0 : shading_factor;
+
+            // // Apply shading to the texture color
+            // red = (int)(red * shading_factor);
+            // green = (int)(green * shading_factor);
+            // blue = (int)(blue * shading_factor);
+
+            int hex_color = (red << 16) | (green << 8) | blue;
+			
+			mlx_pixel_put(params->mlx, params->win, wall_x, wall_y + y, hex_color);
+			texture_position += texture_step;
+		}
+
+
+
+		// // draw ground
+		draw_line(params, init_point(wall_x, wall_y + wall_height), init_point(wall_x, WINDOW_HEIGHT), 0xFFF8C9);
+
+		// // draw ceiling
+		draw_line(params, init_point(wall_x, 0), init_point(wall_x, wall_y), 0xC2D9FF);
+		// draw_line (params, init_point(params->player.x, params->player.y), init_point(ray.x, ray.y), 0xC2D9FF);
 	}
 }
 
@@ -311,6 +401,23 @@ int main(void)
 	init_camera(&params.camera);
 
 	draw_map(&params);
+
+	// print the wall1
+	// for (int i = 0; i < 64; i++)
+	// {
+	// 	for (int j = 0; j < 64; j++)
+	// 	{
+	// 		int pixel = (i * 64 + j) * 3;
+	// 		int red = wall1[pixel];
+	// 		int green = wall1[pixel + 1];
+	// 		int blue = wall1[pixel + 2];
+	// 		int hex_color = (red << 16) | (green << 8) | blue;
+	// 		mlx_pixel_put(params.mlx, params.win, j, i, hex_color);
+	// 	}
+	// }
+
+	// open xpm image (Textures/wall.xpm)
+
 
 	mlx_key_hook(params.win, key_press, &params);
 	mlx_loop_hook(params.mlx, update_window, &params);
