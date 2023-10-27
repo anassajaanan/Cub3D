@@ -6,3 +6,4 @@ This project is inspired by the world-famous Wolfenstein 3D game, which was the 
 <img width="2043" alt="image" src="https://github.com/anassajaanan/Cub3D/assets/114141528/bf5b4350-f514-437a-975b-ed6400823712">
 <img width="2044" alt="image" src="https://github.com/anassajaanan/Cub3D/assets/114141528/a191666d-0e49-49c4-a139-3921fdbf533a">
 <img width="2042" alt="image" src="https://github.com/anassajaanan/Cub3D/assets/114141528/5b619c55-9ec3-4079-89a2-e1791acd05e7">
+<img width="2045" alt="image" src="https://github.com/anassajaanan/Cub3D/assets/114141528/40ba9110-098e-4baf-94fb-77735d831ce3">
