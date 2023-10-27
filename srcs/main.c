@@ -18,6 +18,7 @@
 #include "/Users/aajaanan/Desktop/project/Textures/wall6.ppm"
 #include "/Users/aajaanan/Desktop/project/Textures/wall7.ppm"
 #include "/Users/aajaanan/Desktop/project/Textures/wall8.ppm"
+#include "/Users/aajaanan/Desktop/project/Textures/wall9.ppm"
 
 
 
@@ -283,25 +284,42 @@ void	cast_rays(t_params *params)
 			texture_x = (int)ray.x % TILE_SIZE;
 			if (ray.direction > M_PI)
 				texture_x = TILE_SIZE - texture_x - 1;
-			wall_image = wall2;
+			// wall_image = wall5;
+
+			// wall1 for north wall2 for south
+			int mx = (int)(ray.x) / TILE_SIZE;
+			int my = (int)(ray.y - 0.00001) / TILE_SIZE;
+			if (map[my][mx] == '1') // south
+				wall_image = wall2;
+			else
+				wall_image = wall1;
 		}
 		else
 		{
 			texture_x = (int)ray.y % TILE_SIZE;
 			if (ray.direction > M_PI / 2 && ray.direction < 3 * M_PI / 2)
 				texture_x = TILE_SIZE - texture_x - 1;
-			wall_image = wall8;
+			// wall_image = wall3;
+			// wall3 for east wall4 for west
+			int mx = (int)(ray.x - 0.00001) / TILE_SIZE;
+			int my = (int)ray.y / TILE_SIZE;
+			if (map[my][mx] == '1') // west
+				wall_image = wall8;
+			else
+				wall_image = wall5;
 		}
+		
+
 		double texture_step = TEXTURE_SIZE / wall_height;
 		double texture_position = 0;
 		for (int y = 0; y < wall_height; y++)
 		{
 			texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
-			int pixel = (int)texture_y * TEXTURE_SIZE + (int)texture_x;
+			int pixel = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * 3;
 
-			int red = wall_image[pixel * 3];
-			int green = wall_image[pixel * 3 + 1];
-			int blue = wall2[pixel * 3 + 2];
+			int red = wall_image[pixel];
+			int green = wall_image[pixel + 1];
+			int blue = wall_image[pixel + 2];
 			
 
 			// Shading
@@ -322,11 +340,10 @@ void	cast_rays(t_params *params)
 
 
 		// // draw ground
-		draw_line(params, init_point(wall_x, wall_y + wall_height), init_point(wall_x, WINDOW_HEIGHT), 0xFFF8C9);
+		draw_line(params, init_point(wall_x, wall_y + wall_height), init_point(wall_x, WINDOW_HEIGHT), 0xF5F5F5);
 
 		// // draw ceiling
 		draw_line(params, init_point(wall_x, 0), init_point(wall_x, wall_y), 0xC2D9FF);
-		// draw_line (params, init_point(params->player.x, params->player.y), init_point(ray.x, ray.y), 0xC2D9FF);
 	}
 }
 
@@ -401,22 +418,6 @@ int main(void)
 	init_camera(&params.camera);
 
 	draw_map(&params);
-
-	// print the wall1
-	// for (int i = 0; i < 64; i++)
-	// {
-	// 	for (int j = 0; j < 64; j++)
-	// 	{
-	// 		int pixel = (i * 64 + j) * 3;
-	// 		int red = wall1[pixel];
-	// 		int green = wall1[pixel + 1];
-	// 		int blue = wall1[pixel + 2];
-	// 		int hex_color = (red << 16) | (green << 8) | blue;
-	// 		mlx_pixel_put(params.mlx, params.win, j, i, hex_color);
-	// 	}
-	// }
-
-	// open xpm image (Textures/wall.xpm)
 
 
 	mlx_key_hook(params.win, key_press, &params);
