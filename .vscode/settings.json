@@ -1,6 +1,9 @@
 {
+	"cSpell.words": [
+		"fpoint"
+	],
 	"files.associations": {
-		"ios": "c",
-		"algorithm": "c"
+		"iterator": "c",
+		"*.ppm": "c"
 	}
 }

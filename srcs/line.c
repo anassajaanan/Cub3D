@@ -74,3 +74,33 @@ void	draw_line(t_params *params, t_point p1, t_point p2, int color)
 	// dda(params, p1, p2, color);
 	bresenham(params, p1, p2, color);
 }
+
+// draw line on the image
+void	draw_line_img(t_params *params, t_point p1, t_point p2, int color)
+{
+	t_point	delta;
+	t_point	sign;
+	int		err;
+	int		e2;
+
+	init_bresenham_params(p1, p2, &delta, &sign);
+	err = delta.x + delta.y;
+	while (1)
+	{
+		// mlx_pixel_put(params->mlx, params->win, p1.x, p1.y, color);
+		mlx_pixel_put_img(params->mlx, &params->img, p1.x, p1.y, color);
+		if (p1.x == p2.x && p1.y == p2.y)
+			break ;
+		e2 = 2 * err;
+		if (e2 >= delta.y)
+		{
+			err += delta.y;
+			p1.x += sign.x;
+		}
+		if (e2 <= delta.x)
+		{
+			err += delta.x;
+			p1.y += sign.y;
+		}
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/10/26 18:47:08 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:58:44 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ typedef struct s_fpoint
 	float	y;
 }			t_fpoint;
 
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		size_line;
+	int		bpp;
+	int		endian;
+	int		width;
+	int		height;
+}			t_img;
+
 typedef struct s_player
 {
 	double	x;
@@ -54,8 +66,6 @@ typedef struct s_player
 typedef struct s_camera
 {
 	int		resolution;
-	double	focal_length;
-	double	range;
 }			t_camera;
 
 typedef struct s_ray
@@ -74,17 +84,17 @@ typedef struct s_params
 	void		*win;
 	t_player	player;
 	t_camera	camera;
-	int			bits_per_pixel;
-	int			size_line;
-	int			endian;
+	t_img		img;
 }				t_params;
 
 
 // point.c
 t_point	init_point(int x, int y);
+int	mlx_pixel_put_img(void *mlx_ptr, t_img *img_ptr, int x, int y, int color);
 
 // line.c
 void	draw_line(t_params *params, t_point p1, t_point p2, int color);
+void	draw_line_img(t_params *params, t_point p1, t_point p2, int color);
 
 
 #endif /* CUB3D_H */
