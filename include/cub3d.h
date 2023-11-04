@@ -102,4 +102,17 @@ void	free_split_array(char **array);
 // #============# utils.c #===============#
 int	is_numeric(char *str);
 
+// #============# parsing.c #===============#
+int	parse_map(char *file_name, t_map_infos *map_infos);
+
+// #============# validation.c #===============#
+int	validate_colors(t_map_infos *map_infos, t_color *color, char **colors);
+int	is_valid_texture_path(char *path);
+
+// #============# parsing_helpers.c #===============#
+int startswith(char **array, char *str);
+int	array_size(char **array);
+int	is_empty_line(char *line);
+int open_map_file(char *file_name);
+
 #endif /* CUB3D_H */
