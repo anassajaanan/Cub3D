@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/10/29 16:58:44 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/04 09:34:50 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,74 +27,79 @@
 # include "../lib/libft/include/libft.h"
 # include "../lib/mlx/mlx.h"
 
-#define HORIZONTAL 0
-#define VERTICAL 1
-
-typedef struct s_point
+typedef enum e_error
 {
-	int	x;
-	int	y;
-}	t_point;
+	SUCCESS,
+	INVALID_ARG,
+	WRONG_MAP,
+	WRONG_INPUT,
+	MALLOC_FAIL,
+	IMG_FAIL,
+	OPEN_ERR,
+	MLX_FAIL,
+	WRITE_FAIL,
+	WRONG_TEXTURE
+}					t_error;
 
-typedef struct s_fpoint
+
+// #===========# queue.c #===============#
+typedef struct s_queue_node
 {
-	float	x;
-	float	y;
-}			t_fpoint;
+	char				*val;
+	struct s_queue_node	*next;
+}						t_queue_node;
 
-typedef struct s_img
+typedef struct s_queue
 {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		size_line;
-	int		bpp;
-	int		endian;
-	int		width;
-	int		height;
-}			t_img;
+	t_queue_node		*front;
+	t_queue_node		*rear;
+}						t_queue;
 
-typedef struct s_player
+void					init_queue(t_queue *q);
+void					enqueue(t_queue *q, void *val);
+void					*dequeue(t_queue *q);
+char					*queue_to_str(t_queue *q);
+void					free_queue(t_queue *q);
+// #===========# queue.c #===============#
+
+
+// #===========# parsing.c #=============#
+
+typedef struct s_texture
 {
-	double	x;
-	double	y;
-	double	dx;
-	double	dy;
-	double	direction;
-}			t_player;
+	char	*path;
+}			t_texture;
 
-typedef struct s_camera
+typedef struct s_color
 {
-	int		resolution;
-}			t_camera;
+	int	red;
+	int green;
+	int blue;
+}		t_color;
 
-typedef struct s_ray
+typedef struct s_map_infos
 {
-	double	x;
-	double	y;
-	double	distance;
-	double	direction;
-	int		color;
-	int 	hit;
-}			t_ray;
+	t_texture	north_texture;
+	t_texture	south_texture;
+	t_texture	west_texture;
+	t_texture	east_texture;
+	
+	t_color		floor_color;
+	t_color		ceiling_color;
 
-typedef struct s_params
-{
-	void		*mlx;
-	void		*win;
-	t_player	player;
-	t_camera	camera;
-	t_img		img;
-}				t_params;
+	t_queue		map;
+
+	int			parsed_color_count;
+	int			parsed_texture_count;
+}				t_map_infos;
 
 
-// point.c
-t_point	init_point(int x, int y);
-int	mlx_pixel_put_img(void *mlx_ptr, t_img *img_ptr, int x, int y, int color);
 
-// line.c
-void	draw_line(t_params *params, t_point p1, t_point p2, int color);
-void	draw_line_img(t_params *params, t_point p1, t_point p2, int color);
+// #============# free.c #===============#
+void	ft_free(void *ptr);
+void	free_split_array(char **array);
 
+// #============# utils.c #===============#
+int	is_numeric(char *str);
 
 #endif /* CUB3D_H */

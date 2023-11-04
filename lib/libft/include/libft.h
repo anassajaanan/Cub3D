@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 17:47:13 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/10/14 09:09:24 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/04 11:51:37 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 1
 # endif
 
 struct							s_queue_node_char
@@ -42,7 +42,7 @@ typedef struct s_list
 }								t_list;
 
 /* #================== LIBFT: Part 1 ==================# */
-int								ft_atoi(const char *str);
+int								ft_atoi(char *str);
 long long						ft_atoll(const char *str, int *over_under_flow);
 void							ft_bzero(void *str, size_t num);
 void							*ft_calloc(size_t nbr_elmts, size_t size);

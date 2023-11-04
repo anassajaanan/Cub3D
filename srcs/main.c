@@ -1,463 +1,299 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
+/*   Updated: 2023/11/04 12:33:30 by aajaanan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
+#include <unistd.h>
 
-#define WINDOW_WIDTH 2048
-#define WINDOW_HEIGHT 1024
-#define MOVEMENT_SPEED 20
-#define ROTATION_SPEED 0.2
-#define TILE_SIZE 64
-#define TEXTURE_SIZE 64
-#define ROWS 16
-#define COLS 16
-#define PLAYER_SIZE 10
-#define PLAYER_COLOR 0xFF0000
-#include "/Users/aajaanan/Desktop/project/Textures/wall1.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall2.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall3.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall4.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall5.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall6.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall7.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall8.ppm"
-#include "/Users/aajaanan/Desktop/project/Textures/wall9.ppm"
+void	parse_map_to_queue(int fd, t_queue *q);
 
-
-
-
-
-char	*map[16] = {
-	"1111111111111111",
-	"1000000000000001",
-	"1000111111110001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000100000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1111111111111111"
-};
-
-void	init_player(t_player *player)
+int startswith(char **array, char *str)
 {
-	player->x = 100;
-	player->y = 100;
-	player->direction = 0;
-	player->dx = cos(player->direction) * MOVEMENT_SPEED;
-	player->dy = sin(player->direction) * MOVEMENT_SPEED;
+	if (ft_strcmp(array[0], str) == 0)
+		return (1);
+	return (0);
 }
 
-void	init_camera(t_camera *camera)
+int	is_valid_texture_path(char *path)
 {
-	camera->resolution = 1048;
+	int	fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	close(fd);
+	return (1);
 }
 
-void	init_img(t_params *params)
+int	array_size(char **array)
 {
-	params->img.width = WINDOW_WIDTH;
-	params->img.height = WINDOW_HEIGHT;
-	params->img.img = mlx_new_image(params->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	params->img.addr = mlx_get_data_addr(params->img.img, &params->img.bits_per_pixel, &params->img.size_line, &params->img.endian);
-	params->img.bpp = params->img.bits_per_pixel / 8;
+	int	i;
+
+	i = 0;
+	while (array[i])
+		i++;
+	return (i);
+}
+
+int	parse_texture_line(t_map_infos *map_infos, char **array)
+{
+	if (array_size(array) != 2)
+	{
+		ft_printf_fd(STDERR_FILENO, "Error\n");
+		ft_printf_fd(STDERR_FILENO, "Invalid texture line format. Please provide \
+only the texture identifier and the path.\n");
+		return (WRONG_MAP);
+	}
+	if (!is_valid_texture_path(array[1]))
+	{
+		ft_printf_fd(STDERR_FILENO, "Error\n");
+		ft_printf_fd(STDERR_FILENO, "Invalid or non-existent texture path. Please provide \
+a valid and accessible file path for the texture.\n");
+		return (WRONG_MAP);
+	}
+	if (ft_strcmp(array[0], "NO") == 0)
+		map_infos->north_texture.path = ft_strdup(array[1]);
+	else if (ft_strcmp(array[0], "SO") == 0)
+		map_infos->south_texture.path = ft_strdup(array[1]);
+	else if (ft_strcmp(array[0], "WE") == 0)
+		map_infos->west_texture.path = ft_strdup(array[1]);
+	else if (ft_strcmp(array[0], "EA") == 0)
+		map_infos->east_texture.path = ft_strdup(array[1]);
+	return (SUCCESS);
 }
 
 
-void	normalize_direction(double *direction)
+int	is_valid_colors(char **colors)
 {
-	if (*direction < 0)
-		*direction += 2 * M_PI;
-	if (*direction > 2 * M_PI)
-		*direction -= 2 * M_PI;
+	int	i;
+
+	i = 0;
+	while (colors[i])
+	{
+		if (!is_numeric(colors[i]))
+			return (0);
+		i++;
+	}
+	return (i == 3);
 }
 
-void	draw_tile(t_params *params, int col, int row, int color)
+int	is_valid_color(t_color *color)
 {
-	for (int i = 0; i < TILE_SIZE - 1; i++)
-	{
-		for (int j = 0; j < TILE_SIZE - 1; j++)
-		{
-			// mlx_pixel_put(params->mlx, params->win, col * TILE_SIZE + j, row * TILE_SIZE + i, color);
-			mlx_pixel_put_img(params->mlx, &params->img, col * TILE_SIZE + j, row * TILE_SIZE + i, color);
-			
-		}
-	}
+	if (color->red < 0 || color->red > 255)
+		return (0);
+	if (color->green < 0 || color->green > 255)
+		return (0);
+	if (color->blue < 0 || color->blue > 255)
+		return (0);
+	return (1);
 }
 
-void	draw_map(t_params *params)
+int	validate_colors(t_map_infos *map_infos, t_color *color, char **colors)
 {
-	for (int i = 0; i < ROWS; i++)
+	if (!is_valid_colors(colors))
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			if (map[i][j] == '1')
-				draw_tile(params, j, i, 0xFFFFFF);
-		}
+		ft_printf_fd(STDERR_FILENO, "Error\n");
+		ft_printf_fd(STDERR_FILENO, "Invalid color format. Please use three \
+comma-separated digits for the color components (e.g., 'R,G,B').\n");
+		return (WRONG_MAP);
 	}
+	color->red = ft_atoi(colors[0]);
+	color->green = ft_atoi(colors[1]);
+	color->blue = ft_atoi(colors[2]);
+	if (!is_valid_color(color))
+	{
+		ft_printf_fd(STDERR_FILENO, "Error\n");
+		ft_printf_fd(STDERR_FILENO, "Color components must be between 0 \
+and 255.\n");
+		return (WRONG_MAP);
+	}
+	return (SUCCESS);
 }
 
-void	draw_player(t_params *params)
+int	parse_color_line(t_map_infos *map_infos, char **array)
 {
-	int x;
-	int y;
+	char	**colors;
+	t_color	*color;
 
-	x = params->player.x - PLAYER_SIZE / 2;
-	y = params->player.y - PLAYER_SIZE / 2;
-	for (int i = 0; i < PLAYER_SIZE; i++)
+	if (array_size(array) != 2)
+		return (ft_printf_fd(STDERR_FILENO, "Error\n"), \
+		ft_printf_fd(STDERR_FILENO, "Invalid color line format. Please provide \
+only the color identifier and the color components.\n"), WRONG_MAP);
+	if (ft_strcmp(array[0], "F") == 0)
+		color = &map_infos->floor_color;
+	else if (ft_strcmp(array[0], "C") == 0)
+		color = &map_infos->ceiling_color;
+	if (!ft_isdigit(array[1][0]) 
+		|| !ft_isdigit(array[1][ft_strlen(array[1]) - 1]))
 	{
-		for (int j = 0; j < PLAYER_SIZE; j++)
-		{
-			// mlx_pixel_put(params->mlx, params->win, x + j, y + i, PLAYER_COLOR);
-			mlx_pixel_put_img(params->mlx, &params->img, x + j, y + i, PLAYER_COLOR);
-		}
+		ft_printf_fd(STDERR_FILENO, "Error\n");
+		ft_printf_fd(STDERR_FILENO, "Invalid color format. Please use three \
+comma-separated digits for the color components (e.g., 'R,G,B').\n");
+		return (WRONG_MAP);
 	}
+	colors = ft_split(array[1], ',');
+	if (validate_colors(map_infos, color, colors) == WRONG_MAP)
+		return (free_split_array(colors), WRONG_MAP);
+	free_split_array(colors);
+	return (SUCCESS);
+}
+
+int open_map_file(char *file_name)
+{
+    int fd = open(file_name, O_RDONLY);
+    if (fd == -1)
+        return -1;
+    return fd;
 }
 
 
-
-// Ray Casting Algorithm
-
-// Calculate Horizontal Intersection
-
-double	calculate_distance(double x1, double y1, double x2, double y2)
+int	parse_line(t_map_infos *map_infos, char *map_line)
 {
-	if ((int)x2 == -1 && (int)y2 == -1)
-	{
-		// printf("Error: No intersection\n");
-		return (INT_MAX);
-	}
-	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
-}
+	char	**array;
 
-t_fpoint	horizontal_ray_intersection(t_params *params, double angle)
-{
-	t_fpoint	ray;
-	float		y_step;
-	float		x_step;
-	t_point		index;
-
-	ray.x = -1;
-	ray.y = -1;
-	if (angle == 0 || angle == M_PI)
-		return (ray);
-	else if (angle > 0 && angle < M_PI) // looking Down
+	array = ft_split(map_line, ' ');
+	if (startswith(array, "NO") || startswith(array, "SO") 
+		|| startswith(array, "WE") || startswith(array, "EA"))
 	{
-		ray.y = (((int)params->player.y / TILE_SIZE) * TILE_SIZE) + TILE_SIZE;
-		y_step = TILE_SIZE;
+		if (parse_texture_line(map_infos, array) != SUCCESS)
+			return (free_split_array(array), WRONG_MAP);
+		map_infos->parsed_texture_count++;
 	}
-	else // looking Up
+	else if (startswith(array, "F") || startswith(array, "C"))
 	{
-		ray.y = (((int)params->player.y / TILE_SIZE) * TILE_SIZE) - 0.0001;
-		y_step = -TILE_SIZE;
-	}
-	float inv_tan_angle = 1.0 / tan(angle);
-	ray.x = params->player.x + (ray.y - params->player.y) * inv_tan_angle;
-	x_step = y_step * inv_tan_angle;
-	while (1)
-	{
-		index.x = (int)ray.x / TILE_SIZE;
-		index.y = (int)ray.y / TILE_SIZE;
-		if (index.x < 0 || index.x >= COLS || index.y < 0 || index.y >= ROWS)
-		{
-			ray.x = -1;
-			ray.y = -1;
-			return (ray);
-		}
-		if (map[index.y][index.x] == '1')
-			break;
-		ray.x += x_step;
-		ray.y += y_step;
-	}
-	return (ray);
-}
-
-t_fpoint	vertical_ray_intersection(t_params *params, double angle)
-{
-	t_fpoint	ray;
-	float		y_step;
-	float		x_step;
-	t_point		index;
-
-	ray.x = -1;
-	ray.y = -1;
-	if (angle == M_PI / 2 || angle == 3 * M_PI / 2)
-		return (ray);
-	else if (angle > M_PI / 2 && angle < 3 * M_PI / 2) // looking Left
-	{
-		ray.x = (((int)params->player.x / TILE_SIZE) * TILE_SIZE) - 0.0001;
-		x_step = -TILE_SIZE;
-	}
-	else // looking Right
-	{
-		ray.x = (((int)params->player.x / TILE_SIZE) * TILE_SIZE) + TILE_SIZE;
-		x_step = TILE_SIZE;
-	}
-	float tan_angle = tan(angle);
-	ray.y = params->player.y + (ray.x - params->player.x) * tan_angle;
-	y_step = x_step * tan_angle;
-	while (1)
-	{
-		index.x = (int)ray.x / TILE_SIZE;
-		index.y = (int)ray.y / TILE_SIZE;
-		if (index.x < 0 || index.x >= COLS || index.y < 0 || index.y >= ROWS)
-		{
-			ray.x = -1;
-			ray.y = -1;
-			return (ray);
-		}
-		if (map[index.y][index.x] == '1')
-			break;
-		ray.x += x_step;
-		ray.y += y_step;
-	}
-
-	return (ray);
-}
-
-t_ray	ray_intersection(t_params *params, double angle)
-{
-	t_ray		ray;
-	t_fpoint	horizontal;
-	t_fpoint	vertical;
-	double		horizontal_distance;
-	double		vertical_distance;
-
-	ray.direction = angle;
-	horizontal = horizontal_ray_intersection(params, angle);
-	vertical = vertical_ray_intersection(params, angle);
-	horizontal_distance = calculate_distance(params->player.x, params->player.y, horizontal.x, horizontal.y);
-	vertical_distance = calculate_distance(params->player.x, params->player.y, vertical.x, vertical.y);
-	if (horizontal_distance < vertical_distance)
-	{
-		ray.x = horizontal.x;
-		ray.y = horizontal.y;
-		ray.distance = horizontal_distance;
-		ray.color = 0x7752FE;
-		ray.hit = HORIZONTAL;
+		if (parse_color_line(map_infos, array) != SUCCESS)
+			return (free_split_array(array), WRONG_MAP);
+		map_infos->parsed_color_count++;
 	}
 	else
 	{
-		ray.x = vertical.x;
-		ray.y = vertical.y;
-		ray.distance = vertical_distance;
-		ray.color = 0x8E8FFA;
-		ray.hit = VERTICAL;
+		ft_printf_fd(STDERR_FILENO, "Error\n");
+		ft_printf_fd(STDERR_FILENO, "Invalid line in the map. Each line in the map \
+should start with a texture or a color definition.\n");
+		return (free_split_array(array), WRONG_MAP);
 	}
-	return (ray);
+	return (free_split_array(array), SUCCESS);
 }
 
-
-
-void	cast_rays(t_params *params)
+int	parse_map(char *file_name, t_map_infos *map_infos)
 {
-	int		num_columns;
-	double	player_FOV;
-	double	column_width;
-	double	column_increment;
+	int		fd;
+	char	*line;
+	char	*map_line;
 
-	num_columns = params->camera.resolution;
-	player_FOV = M_PI / 3;
-	column_width = WINDOW_WIDTH / num_columns;
-	column_increment = player_FOV / num_columns;
-
-	double angle = params->player.direction - (player_FOV / 2);
-	for (int column = 0; column < num_columns; column++)
+	fd = open_map_file(file_name);
+	if (fd == -1)
+		return (OPEN_ERR);
+	line = get_next_line(fd);
+	while (line)
 	{
-		double ray_angle = angle + (column * column_increment);
-		t_ray ray = ray_intersection(params, ray_angle);
-		double distance = ray.distance * cos(ray_angle - params->player.direction);
-		// double wall_height = (WINDOW_HEIGHT / distance);
-		double wall_height = (WINDOW_HEIGHT * TILE_SIZE) / distance;
-		double wall_width = column_width;
-		int half_width = WINDOW_WIDTH / 2;
-		double wall_x = half_width + column * column_width;
-		double wall_y = (WINDOW_HEIGHT / 2) - (wall_height / 2);
+		map_line = ft_strtrim(line, " \t\v\f\r\n");
+		ft_free(line);
+		if (*map_line && parse_line(map_infos, map_line) != SUCCESS)
+			return (ft_free(map_line), close(fd), WRONG_MAP);
+		ft_free(map_line);
+		if (map_infos->parsed_texture_count == 4 
+			&& map_infos->parsed_color_count == 2)
+			break ;
+		line = get_next_line(fd);
+	}
+	parse_map_to_queue(fd, &map_infos->map);
+	printf("Correct Map\n");
+	close(fd);
+	return (SUCCESS);
+}
+
+void	init_map_infos(t_map_infos *map_infos)
+{
+	map_infos->south_texture.path = NULL;
+	map_infos->north_texture.path = NULL;
+	map_infos->west_texture.path = NULL;
+	map_infos->east_texture.path = NULL;
+
+	map_infos->parsed_color_count = 0;
+	map_infos->parsed_texture_count = 0;
+}
+
+void	free_map_infos(t_map_infos *map_infos)
+{
+	ft_free(map_infos->north_texture.path);
+	ft_free(map_infos->south_texture.path);
+	ft_free(map_infos->west_texture.path);
+	ft_free(map_infos->east_texture.path);
+
+	free_queue(&map_infos->map);
+}
+
+int	is_empty_line(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\v' && line[i] != '\f' && line[i] != '\r' && line[i] != '\n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	parse_map_to_queue(int fd, t_queue *q)
+{
+	char	*line;
 	
-		// draw_line_img(params, init_point(wall_x, wall_y), init_point(wall_x, wall_y + wall_height), ray.color);
-		
-		// Render the wall textures
-		double texture_x, texture_y;
-		int	*wall_image;
-		if (ray.hit == HORIZONTAL)
-		{
-			texture_x = (int)ray.x % TILE_SIZE;
-			if (ray.direction > M_PI)
-				texture_x = TILE_SIZE - texture_x - 1;
-			// wall_image = wall5;
-
-			// wall1 for north wall2 for south
-			int mx = (int)(ray.x) / TILE_SIZE;
-			int my = (int)(ray.y - 0.00001) / TILE_SIZE;
-			if (map[my][mx] == '1') // south
-				wall_image = wall2;
-			else
-				wall_image = wall1;
-		}
-		else
-		{
-			texture_x = (int)ray.y % TILE_SIZE;
-			if (ray.direction > M_PI / 2 && ray.direction < 3 * M_PI / 2)
-				texture_x = TILE_SIZE - texture_x - 1;
-			// wall_image = wall3;
-			// wall3 for east wall4 for west
-			int mx = (int)(ray.x - 0.00001) / TILE_SIZE;
-			int my = (int)ray.y / TILE_SIZE;
-			if (map[my][mx] == '1') // west
-				wall_image = wall8;
-			else
-				wall_image = wall5;
-		}
-		
-
-		double texture_step = TEXTURE_SIZE / wall_height;
-		double texture_position = 0;
-		for (int y = 0; y < wall_height; y++)
-		{
-			texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
-			int pixel = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * 3;
-			// check for valid index
-			if (pixel < 0 || pixel > (TEXTURE_SIZE * TEXTURE_SIZE * 3 - 3))
-			{
-				// printf("Error: Invalid pixel index: %d\n", pixel);
-				continue;
-			}
-
-			int red = wall_image[pixel];
-			int green = wall_image[pixel + 1];
-			int blue = wall_image[pixel + 2];
-			
-
-			// Shading
-            // double shading_factor = 1.0 - (distance / 1024.0);
-            // shading_factor = (shading_factor < 0.0) ? 0.0 : shading_factor;
-
-            // // Apply shading to the texture color
-            // red = (int)(red * shading_factor);
-            // green = (int)(green * shading_factor);
-            // blue = (int)(blue * shading_factor);
-
-            int hex_color = (red << 16) | (green << 8) | blue;
-			
-			// mlx_pixel_put(params->mlx, params->win, wall_x, wall_y + y, hex_color);
-			mlx_pixel_put_img(params->mlx, &params->img, wall_x, wall_y + y, hex_color);
-			texture_position += texture_step;
-		}
-
-		// // draw ground
-		draw_line_img(params, init_point(wall_x, wall_y + wall_height), init_point(wall_x, WINDOW_HEIGHT), 0xF5F5F5);
-
-		// // draw ceiling
-		draw_line_img(params, init_point(wall_x, 0), init_point(wall_x, wall_y), 0xC2D9FF);
+	line = get_next_line(fd);
+	while (line && is_empty_line(line))
+	{
+		ft_free(line);
+		line = get_next_line(fd);
 	}
+	while (line && !is_empty_line(line))
+	{
+		enqueue(q, line);
+		line = get_next_line(fd);
+	}
+	ft_free(line);
 }
 
-int	key_press(int keycode, t_params *params)
+int main()
 {
-	if (keycode == 15)
-	{
-		// cast_rays(params);
-	}
-	if (keycode == 53)
-	{
-		mlx_clear_window(params->mlx, params->win);
-		mlx_destroy_window(params->mlx, params->win);
-		exit(0);
-	}
-	if (keycode == 13)
-	{
-		params->player.x += params->player.dx;
-		params->player.y += params->player.dy;
-		cast_rays(params);
-	}
-	else if (keycode == 1)
-	{
-		params->player.x -= params->player.dx;
-		params->player.y -= params->player.dy;
-		cast_rays(params);
-	}
-	else if (keycode == 0)
-	{
-		params->player.direction -= ROTATION_SPEED;
-		normalize_direction(&params->player.direction);
-		params->player.dx = cos(params->player.direction) * MOVEMENT_SPEED;
-		params->player.dy = sin(params->player.direction) * MOVEMENT_SPEED;
-		cast_rays(params);
-	}
-	else if (keycode == 2)
-	{
-		params->player.direction += ROTATION_SPEED;
-		normalize_direction(&params->player.direction);
-		params->player.dx = cos(params->player.direction) * MOVEMENT_SPEED;
-		params->player.dy = sin(params->player.direction) * MOVEMENT_SPEED;
-		cast_rays(params);
-	}
-	return (0);
-}
-
-int	update_window(t_params *params)
-{
-	// cast_rays(params);
-
-	draw_player(params);
-	draw_line_img(params, init_point(params->player.x, params->player.y), init_point(params->player.x + params->player.dx, params->player.y + params->player.dy), 0xF0000F);
-	// draw_map(params);
-	// cast_rays(params);
-	mlx_put_image_to_window(params->mlx, params->win, params->img.img, 0, 0);
-	return (0);
-}
-
-int main(void)
-{
-	t_params	params;
-
-	params.mlx = mlx_init();
-	params.win = mlx_new_window(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3d");
-
-	init_img(&params);
-	init_player(&params.player);
-	init_camera(&params.camera);
-
-
+	t_map_infos	map_infos;
+	int ret;
 	
+	char	map[] = "./map.cub";
 
-	// draw_line_img(&params, init_point(0, 0), init_point(WINDOW_WIDTH, WINDOW_HEIGHT), 0x00F0AF);
+	init_map_infos(&map_infos);
+	init_queue(&map_infos.map);
+	ret = parse_map(map, &map_infos);
 
+	if (ret == SUCCESS)
+	{
+		printf("NO: %s\n", map_infos.north_texture.path);
+		printf("SO: %s\n", map_infos.south_texture.path);
+		printf("WE: %s\n", map_infos.west_texture.path);
+		printf("EA: %s\n", map_infos.east_texture.path);
+		printf("F: %d, %d, %d\n", map_infos.floor_color.red, map_infos.floor_color.green, map_infos.floor_color.blue);
+		printf("C: %d, %d, %d\n", map_infos.ceiling_color.red, map_infos.ceiling_color.green, map_infos.ceiling_color.blue);
+		printf("Map:\n");
+		t_queue_node	*tmp = map_infos.map.front;
+		while (tmp)
+		{
+			printf("%s", tmp->val);
+			tmp = tmp->next;
+		}
+	}
+
+
+	free_map_infos(&map_infos);
+	return (ret);
 	
-	mlx_key_hook(params.win, key_press, &params);
-	mlx_loop_hook(params.mlx, update_window, &params);
-	mlx_loop(params.mlx);
-	return (0);
 }
-
-
-// int main(void)
-// {
-// 	t_params	params;
-
-// 	params.mlx = mlx_init();
-// 	params.win = mlx_new_window(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3d");
-
-// 	params.img.width = WINDOW_WIDTH;
-// 	params.img.height = WINDOW_HEIGHT;
-// 	params.img.img = mlx_new_image(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-// 	params.img.addr = mlx_get_data_addr(params.img.img, &params.img.bits_per_pixel, &params.img.size_line, &params.img.endian);
-
-// 	// fill the img buffer with red color
-// 	for (int i = 0; i < WINDOW_HEIGHT; i++)
-// 	{
-// 		for (int j = 1024; j < WINDOW_WIDTH; j++)
-// 		{
-// 			int pixel_index = (i * params.img.size_line) + (j * (params.img.bits_per_pixel / 8));
-// 			*(unsigned int *)(params.img.addr + pixel_index) = 0xFF0000;
-// 		}
-// 	}
-
-
-// 	mlx_put_image_to_window(params.mlx, params.win, params.img.img, 0, 0);
-
-// 	mlx_loop(params.mlx);
-// }
