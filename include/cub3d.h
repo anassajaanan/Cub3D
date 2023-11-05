@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/05 04:29:10 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/05 05:01:50 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	is_numeric(char *str);
 // #============# parsing.c #===============#
 int	parse_map(char *file_name, t_map_infos *map_infos);
 
-// #============# validation.c #===============#
+// #============# parsing_validation.c #===============#
 int	validate_colors(t_map_infos *map_infos, t_color *color, char **colors);
 int	is_valid_texture_path(char *path);
 
@@ -122,5 +122,8 @@ int startswith(char **array, char *str);
 int	array_size(char **array);
 int	is_empty_line(char *line);
 int open_map_file(char *file_name);
+
+// #============# map_validation.c #===============#
+int	validate_map_characters(t_map *map);
 
 #endif /* CUB3D_H */

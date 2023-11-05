@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/05 04:31:36 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/05 05:05:18 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void	add_row_to_2D_array(char **map, t_queue *queue, int *index, int columns)
 	while (i < old_row_len - 1)
 	{
 		if (old_row[i] == ' ')
-			new_row[i] = '2';
+			new_row[i] = ' ';
 		else
 			new_row[i] = old_row[i];
 		i++;
 	}
 	while (i < columns - 1)
-		new_row[i++] = '2';
+		new_row[i++] = ' ';
 	new_row[i] = '\0';
 	map[*index] = new_row;
 	(*index)++;
@@ -135,30 +135,38 @@ int main()
 
 	if (ret == SUCCESS)
 	{
-		printf("NO: %s\n", map_infos.north_texture.path);
-		printf("SO: %s\n", map_infos.south_texture.path);
-		printf("WE: %s\n", map_infos.west_texture.path);
-		printf("EA: %s\n", map_infos.east_texture.path);
-		printf("F: %d, %d, %d\n", map_infos.floor_color.red, map_infos.floor_color.green, map_infos.floor_color.blue);
-		printf("C: %d, %d, %d\n", map_infos.ceiling_color.red, map_infos.ceiling_color.green, map_infos.ceiling_color.blue);
-		printf("Map:\n");
-		t_queue_node	*tmp = map_infos.map.front;
-		while (tmp)
-		{
-			printf("%s", tmp->val);
-			tmp = tmp->next;
-		}
+		// printf("NO: %s\n", map_infos.north_texture.path);
+		// printf("SO: %s\n", map_infos.south_texture.path);
+		// printf("WE: %s\n", map_infos.west_texture.path);
+		// printf("EA: %s\n", map_infos.east_texture.path);
+		// printf("F: %d, %d, %d\n", map_infos.floor_color.red, map_infos.floor_color.green, map_infos.floor_color.blue);
+		// printf("C: %d, %d, %d\n", map_infos.ceiling_color.red, map_infos.ceiling_color.green, map_infos.ceiling_color.blue);
+		// printf("Map:\n");
+		// t_queue_node	*tmp = map_infos.map.front;
+		// while (tmp)
+		// {
+		// 	printf("%s", tmp->val);
+		// 	tmp = tmp->next;
+		// }
 
-		printf("\n\nMap 2D:\n");
+		// printf("\n\nMap 2D:\n");
+		// convert_queue_to_2D_array(&map, &map_infos.map);
+		// char	**map_2d = map.map_data;
+		// int		i = 0;
+		// while (map_2d[i])
+		// {
+		// 	printf("{%s}\n", map_2d[i]);
+		// 	i++;
+		// }
+
 		convert_queue_to_2D_array(&map, &map_infos.map);
-		char	**map_2d = map.map_data;
-		int		i = 0;
-		while (map_2d[i])
-		{
-			printf("%s\n", map_2d[i]);
-			i++;
-		}
-		free_2D_array(map_2d);
+		int is_valid = validate_map_characters(&map);
+		if (is_valid)
+			printf("Map is valid\n");
+		else
+			printf("Map is not valid\n");
+
+		free_2D_array(map.map_data);
 	}
 
 
