@@ -117,6 +117,23 @@ void	draw_player(t_params *params)
 	}
 }
 
+void	clear_player(t_params *params)
+{
+	int x;
+	int y;
+
+	x = params->player.x - PLAYER_SIZE / 2;
+	y = params->player.y - PLAYER_SIZE / 2;
+	for (int i = 0; i < PLAYER_SIZE; i++)
+	{
+		for (int j = 0; j < PLAYER_SIZE; j++)
+		{
+			// mlx_pixel_put(params->mlx, params->win, x + j, y + i, PLAYER_COLOR);
+			mlx_pixel_put_img(params->mlx, &params->img, x + j, y + i, 0x000000);
+		}
+	}
+}
+
 
 
 // Ray Casting Algorithm
@@ -402,31 +419,13 @@ void	empty_cast_rays(t_params *params)
 
 int	key_press(int keycode, t_params *params)
 {
-	if (keycode == 15)
-	{
-		// cast_rays(params);
-	}
 	if (keycode == 53)
 	{
 		mlx_clear_window(params->mlx, params->win);
 		mlx_destroy_window(params->mlx, params->win);
 		exit(0);
 	}
-	if (keycode == 13)
-	{
-		empty_cast_rays(params);
-		params->player.x += params->player.dx;
-		params->player.y += params->player.dy;
-		cast_rays(params);
-	}
-	else if (keycode == 1)
-	{
-		empty_cast_rays(params);
-		params->player.x -= params->player.dx;
-		params->player.y -= params->player.dy;
-		cast_rays(params);
-	}
-	else if (keycode == 0)
+	if (keycode == 123) // left Arrow
 	{
 		empty_cast_rays(params);
 		params->player.direction -= ROTATION_SPEED;
@@ -435,7 +434,7 @@ int	key_press(int keycode, t_params *params)
 		params->player.dy = sin(params->player.direction) * MOVEMENT_SPEED;
 		cast_rays(params);
 	}
-	else if (keycode == 2)
+	else if (keycode == 124) // right arrow
 	{
 		empty_cast_rays(params);
 		params->player.direction += ROTATION_SPEED;
@@ -443,6 +442,41 @@ int	key_press(int keycode, t_params *params)
 		params->player.dx = cos(params->player.direction) * MOVEMENT_SPEED;
 		params->player.dy = sin(params->player.direction) * MOVEMENT_SPEED;
 		cast_rays(params);
+	}
+	else if (keycode == 13) // W
+	{
+		clear_player(params);
+		empty_cast_rays(params);
+		params->player.x += params->player.dx;
+		params->player.y += params->player.dy;
+		cast_rays(params);
+	}
+	else if (keycode == 1) // S
+	{
+		clear_player(params);
+		empty_cast_rays(params);
+		params->player.x -= params->player.dx;
+		params->player.y -= params->player.dy;
+		cast_rays(params);
+	}
+	else if (keycode == 0)  // A
+	{
+		// move left
+		clear_player(params);
+		empty_cast_rays(params);
+		params->player.x -= cos(params->player.direction + M_PI / 2) * MOVEMENT_SPEED;
+		params->player.y -= sin(params->player.direction + M_PI / 2) * MOVEMENT_SPEED;
+		cast_rays(params);
+
+	}
+	else if (keycode == 2) // D
+	{
+		// move right
+		clear_player(params);
+		empty_cast_rays(params);
+		params->player.x += cos(params->player.direction + M_PI / 2) * MOVEMENT_SPEED;
+		params->player.y += sin(params->player.direction + M_PI / 2) * MOVEMENT_SPEED;
+		cast_rays(params);	
 	}
 	return (0);
 }
