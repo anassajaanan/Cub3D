@@ -1,14 +1,15 @@
 #include "../include/cub3d.h"
+#include <stdio.h>
 
 #define WINDOW_WIDTH 2048
 #define WINDOW_HEIGHT 1024
-#define MOVEMENT_SPEED 15
+#define MOVEMENT_SPEED 25
 #define ROTATION_SPEED 0.1
 #define TILE_SIZE 64
 #define TEXTURE_SIZE 64
 #define ROWS 14
 #define COLS 33
-#define PLAYER_SIZE 5
+#define PLAYER_SIZE 10
 #define PLAYER_COLOR 0xFF0000
 #include "/Users/aajaanan/Desktop/project/Textures/wall1.ppm"
 #include "/Users/aajaanan/Desktop/project/Textures/wall2.ppm"
@@ -62,7 +63,7 @@ char	*map[] = {
 
 void	init_player(t_player *player)
 {
-	player->x = 100;
+	player->x = 650;
 	player->y = 100;
 	player->direction = 0;
 	player->dx = cos(player->direction) * MOVEMENT_SPEED;
@@ -81,6 +82,23 @@ void	init_img(t_params *params)
 	params->img.img = mlx_new_image(params->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	params->img.addr = mlx_get_data_addr(params->img.img, &params->img.bits_per_pixel, &params->img.size_line, &params->img.endian);
 	params->img.bpp = params->img.bits_per_pixel / 8;
+}
+
+int	init_texture_img(t_params *params, char *texture_path)
+{
+	params->north_texture.img = mlx_xpm_file_to_image(params->mlx, texture_path, &params->north_texture.width, &params->north_texture.height);
+	if (!params->north_texture.img)
+	{
+		printf("Error: Failed to load image\n");
+		return (0);
+	}
+	params->north_texture.addr = mlx_get_data_addr(params->north_texture.img, &params->north_texture.bits_per_pixel, &params->north_texture.size_line, &params->north_texture.endian);
+	if (!params->north_texture.addr)
+	{
+		printf("Error: Failed to get image data\n");
+		return (0);
+	}
+	return (1);
 }
 
 
@@ -365,29 +383,33 @@ void	cast_rays(t_params *params)
 		for (int y = 0; y < wall_height; y++)
 		{
 			texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
-			int pixel = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * 3;
-			// check for valid index
-			if (pixel < 0 || pixel > (TEXTURE_SIZE * TEXTURE_SIZE * 3 - 3))
-			{
-				// printf("Error: Invalid pixel index: %d\n", pixel);
-				continue;
-			}
 
-			int red = wall_image[pixel];
-			int green = wall_image[pixel + 1];
-			int blue = wall_image[pixel + 2];
+			// int pixel = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * 3;
+			// // check for valid index
+			// if (pixel < 0 || pixel > (TEXTURE_SIZE * TEXTURE_SIZE * 3 - 3))
+			// {
+			// 	// printf("Error: Invalid pixel index: %d\n", pixel);
+			// 	continue;
+			// }
+
+			// int red = wall_image[pixel];
+			// int green = wall_image[pixel + 1];
+			// int blue = wall_image[pixel + 2];
 			
 
-			// Shading
-            // double shading_factor = 1.0 - (distance / 1024.0);
-            // shading_factor = (shading_factor < 0.0) ? 0.0 : shading_factor;
+			// // Shading
+            // // double shading_factor = 1.0 - (distance / 1024.0);
+            // // shading_factor = (shading_factor < 0.0) ? 0.0 : shading_factor;
 
-            // // Apply shading to the texture color
-            // red = (int)(red * shading_factor);
-            // green = (int)(green * shading_factor);
-            // blue = (int)(blue * shading_factor);
+            // // // Apply shading to the texture color
+            // // red = (int)(red * shading_factor);
+            // // green = (int)(green * shading_factor);
+            // // blue = (int)(blue * shading_factor);
 
-            int hex_color = (red << 16) | (green << 8) | blue;
+            // int hex_color = (red << 16) | (green << 8) | blue;
+
+			int pixel_index = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * params->north_texture.bits_per_pixel / 8;
+			int hex_color = *(unsigned int *)(params->north_texture.addr + pixel_index);
 			
 			// mlx_pixel_put(params->mlx, params->win, wall_x, wall_y + y, hex_color);
 			mlx_pixel_put_img(params->mlx, &params->img, wall_x, wall_y + y, hex_color);
@@ -522,10 +544,8 @@ int main(void)
 	init_player(&params.player);
 	init_camera(&params.camera);
 
-
-	
-
-	// draw_line_img(&params, init_point(0, 0), init_point(WINDOW_WIDTH, WINDOW_HEIGHT), 0x00F0AF);
+	if (!init_texture_img(&params, "/Users/aajaanan/Desktop/cub3d-execution/Textures/wall.xpm"))
+		return (0);
 
 	
 	mlx_key_hook(params.win, key_press, &params);

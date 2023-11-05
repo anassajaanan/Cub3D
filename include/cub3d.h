@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/10/29 16:58:44 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:28:07 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ typedef struct s_params
 	t_player	player;
 	t_camera	camera;
 	t_img		img;
+	
+	t_img		north_texture;
+	t_img		south_texture;
+	t_img		east_texture;
+	t_img		west_texture;
 }				t_params;
 
 
