@@ -2,13 +2,13 @@
 
 #define WINDOW_WIDTH 2048
 #define WINDOW_HEIGHT 1024
-#define MOVEMENT_SPEED 20
+#define MOVEMENT_SPEED 15
 #define ROTATION_SPEED 0.1
 #define TILE_SIZE 64
 #define TEXTURE_SIZE 64
-#define ROWS 16
-#define COLS 16
-#define PLAYER_SIZE 10
+#define ROWS 14
+#define COLS 33
+#define PLAYER_SIZE 5
 #define PLAYER_COLOR 0xFF0000
 #include "/Users/aajaanan/Desktop/project/Textures/wall1.ppm"
 #include "/Users/aajaanan/Desktop/project/Textures/wall2.ppm"
@@ -24,23 +24,40 @@
 
 
 
+// char	*map[] = {
+// 	"11111111111111111111111",
+// 	"10000000000000011111111",
+// 	"10001111111100011111111",
+// 	"10000000000000011111111",
+// 	"10000000000000011111111",
+// 	"10000000000000011111111",
+// 	"10000000000000011111111",
+// 	"10000001000000011111111",
+// 	"10000000000000011111111",
+// 	"10000000000000011111111",
+// 	"10000001000000011111111",
+// 	"10000000000000011111111",
+// 	"10000000000000011111111",
+// 	"10000000000000011111111",
+// 	"10000000000000011111111",
+// 	"11111111111111111111111"
+// };
+
 char	*map[] = {
-	"1111111111111111",
-	"1000000000000001",
-	"1000111111110001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000100000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000100000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1000000000000001",
-	"1111111111111111"
+	    "111111111111111111111111111111111",
+        "111111111000000000110000000000001",
+        "111111111011000001110000000000001",
+        "111111111001000000000000000000001",
+		"111111111011000001110000000000001",
+		"100000000011000001110111111111111",
+		"111101111111110111000000100011111",
+		"111101111111110111010100100011111",
+		"110000001101010111000000100011111",
+		"100000000000000011000000100011111",
+		"100000000000000011010100100011111",
+		"110000011101010111110111101011111",
+		"111101111111010111011110100011111",
+		"111111111111111111111111111111111"
 };
 
 void	init_player(t_player *player)
@@ -77,12 +94,13 @@ void	normalize_direction(double *direction)
 
 void	draw_tile(t_params *params, int col, int row, int color)
 {
-	for (int i = 0; i < TILE_SIZE - 1; i++)
+	int new_tile_size = TILE_SIZE / 3;
+	for (int i = 0; i < new_tile_size - 1; i++)
 	{
-		for (int j = 0; j < TILE_SIZE - 1; j++)
+		for (int j = 0; j < new_tile_size - 1; j++)
 		{
 			// mlx_pixel_put(params->mlx, params->win, col * TILE_SIZE + j, row * TILE_SIZE + i, color);
-			mlx_pixel_put_img(params->mlx, &params->img, col * (TILE_SIZE) + j, row * (TILE_SIZE) + i, color);
+			mlx_pixel_put_img(params->mlx, &params->img, col * (new_tile_size) + j, row * (new_tile_size) + i, color);
 			
 		}
 	}
@@ -159,8 +177,6 @@ t_fpoint	horizontal_ray_intersection(t_params *params, double angle)
 
 	ray.x = -1;
 	ray.y = -1;
-	// if (angle == 0 || angle == M_PI)
-	// 	return (ray);
 	if (angle == 0 || angle == M_PI || angle == 2 * M_PI)
 		return (ray);
 	else if (angle > 0 && angle < M_PI) // looking Down
@@ -300,81 +316,83 @@ void	cast_rays(t_params *params)
 		double wall_x = half_width + column * column_width;
 		double wall_y = (WINDOW_HEIGHT / 2) - (wall_height / 2);
 	
-		draw_line_img(params, init_point(wall_x, wall_y), init_point(wall_x, wall_y + wall_height), ray.color);
 		
 		if (ray.hit == HORIZONTAL)
 			draw_line_img(params, init_point(params->player.x, params->player.y), init_point(ray.x, ray.y), 0x00F0AF);
 		else
 			draw_line_img(params, init_point(params->player.x, params->player.y), init_point(ray.x, ray.y), 0xE0F0AF);
 		
+
+        /* No textures */
+		// draw_line_img(params, init_point(wall_x, wall_y), init_point(wall_x, wall_y + wall_height), ray.color);
 		
-		// Render the wall textures
-		// double texture_x, texture_y;
-		// int	*wall_image;
-		// if (ray.hit == HORIZONTAL)
-		// {
-		// 	texture_x = (int)ray.x % TILE_SIZE;
-		// 	if (ray.direction > M_PI)
-		// 		texture_x = TILE_SIZE - texture_x - 1;
-		// 	// wall_image = wall5;
+		/* render textures */
+		double texture_x, texture_y;
+		int	*wall_image;
+		if (ray.hit == HORIZONTAL)
+		{
+			texture_x = (int)ray.x % TILE_SIZE;
+			if (ray.direction > M_PI)
+				texture_x = TILE_SIZE - texture_x - 1;
+			// wall_image = wall5;
 
-		// 	// wall1 for north wall2 for south
-		// 	int mx = (int)(ray.x) / TILE_SIZE;
-		// 	int my = (int)(ray.y - 0.00001) / TILE_SIZE;
-		// 	if (map[my][mx] == '1') // south
-		// 		wall_image = wall2;
-		// 	else
-		// 		wall_image = wall1;
-		// }
-		// else
-		// {
-		// 	texture_x = (int)ray.y % TILE_SIZE;
-		// 	if (ray.direction > M_PI / 2 && ray.direction < 3 * M_PI / 2)
-		// 		texture_x = TILE_SIZE - texture_x - 1;
-		// 	// wall_image = wall3;
-		// 	// wall3 for east wall4 for west
-		// 	int mx = (int)(ray.x - 0.00001) / TILE_SIZE;
-		// 	int my = (int)ray.y / TILE_SIZE;
-		// 	if (map[my][mx] == '1') // west
-		// 		wall_image = wall8;
-		// 	else
-		// 		wall_image = wall5;
-		// }
+			// wall1 for north wall2 for south
+			int mx = (int)(ray.x) / TILE_SIZE;
+			int my = (int)(ray.y - 0.00001) / TILE_SIZE;
+			if (map[my][mx] == '1') // south
+				wall_image = wall2;
+			else
+				wall_image = wall1;
+		}
+		else
+		{
+			texture_x = (int)ray.y % TILE_SIZE;
+			if (ray.direction > M_PI / 2 && ray.direction < 3 * M_PI / 2)
+				texture_x = TILE_SIZE - texture_x - 1;
+			// wall_image = wall3;
+			// wall3 for east wall4 for west
+			int mx = (int)(ray.x - 0.00001) / TILE_SIZE;
+			int my = (int)ray.y / TILE_SIZE;
+			if (map[my][mx] == '1') // west
+				wall_image = wall8;
+			else
+				wall_image = wall5;
+		}
 		
 
-		// double texture_step = TEXTURE_SIZE / wall_height;
-		// double texture_position = 0;
-		// for (int y = 0; y < wall_height; y++)
-		// {
-		// 	texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
-		// 	int pixel = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * 3;
-		// 	// check for valid index
-		// 	if (pixel < 0 || pixel > (TEXTURE_SIZE * TEXTURE_SIZE * 3 - 3))
-		// 	{
-		// 		// printf("Error: Invalid pixel index: %d\n", pixel);
-		// 		continue;
-		// 	}
+		double texture_step = TEXTURE_SIZE / wall_height;
+		double texture_position = 0;
+		for (int y = 0; y < wall_height; y++)
+		{
+			texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
+			int pixel = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * 3;
+			// check for valid index
+			if (pixel < 0 || pixel > (TEXTURE_SIZE * TEXTURE_SIZE * 3 - 3))
+			{
+				// printf("Error: Invalid pixel index: %d\n", pixel);
+				continue;
+			}
 
-		// 	int red = wall_image[pixel];
-		// 	int green = wall_image[pixel + 1];
-		// 	int blue = wall_image[pixel + 2];
+			int red = wall_image[pixel];
+			int green = wall_image[pixel + 1];
+			int blue = wall_image[pixel + 2];
 			
 
-		// 	// Shading
-        //     // double shading_factor = 1.0 - (distance / 1024.0);
-        //     // shading_factor = (shading_factor < 0.0) ? 0.0 : shading_factor;
+			// Shading
+            // double shading_factor = 1.0 - (distance / 1024.0);
+            // shading_factor = (shading_factor < 0.0) ? 0.0 : shading_factor;
 
-        //     // // Apply shading to the texture color
-        //     // red = (int)(red * shading_factor);
-        //     // green = (int)(green * shading_factor);
-        //     // blue = (int)(blue * shading_factor);
+            // // Apply shading to the texture color
+            // red = (int)(red * shading_factor);
+            // green = (int)(green * shading_factor);
+            // blue = (int)(blue * shading_factor);
 
-        //     int hex_color = (red << 16) | (green << 8) | blue;
+            int hex_color = (red << 16) | (green << 8) | blue;
 			
-		// 	// mlx_pixel_put(params->mlx, params->win, wall_x, wall_y + y, hex_color);
-		// 	mlx_pixel_put_img(params->mlx, &params->img, wall_x, wall_y + y, hex_color);
-		// 	texture_position += texture_step;
-		// }
+			// mlx_pixel_put(params->mlx, params->win, wall_x, wall_y + y, hex_color);
+			mlx_pixel_put_img(params->mlx, &params->img, wall_x, wall_y + y, hex_color);
+			texture_position += texture_step;
+		}
 
 		// // draw ground
 		draw_line_img(params, init_point(wall_x, wall_y + wall_height), init_point(wall_x, WINDOW_HEIGHT), 0xF5F5F5);
