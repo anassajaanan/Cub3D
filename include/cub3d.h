@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/04 09:34:50 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/05 04:29:10 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <errno.h>
+# include <limits.h>
 # include <sys/errno.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -92,6 +93,13 @@ typedef struct s_map_infos
 	int			parsed_color_count;
 	int			parsed_texture_count;
 }				t_map_infos;
+
+typedef struct s_map
+{
+	int		cols;
+	int		rows;
+	char	**map_data;
+}			t_map;
 
 
 

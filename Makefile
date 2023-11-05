@@ -2,7 +2,7 @@
 NAME = cub3d
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS = main.c queue.c utils.c free.c parsing.c validation.c parsing_helpers.c 
+SRCS = main.c queue.c utils.c free.c parsing.c parsing_validation.c parsing_helpers.c 
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
