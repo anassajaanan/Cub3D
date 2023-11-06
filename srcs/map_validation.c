@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 04:54:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 07:16:53 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 03:47:19 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	is_enclosed_map(t_map *map)
 	return (1);
 }
 
-int	validate_map_characters(t_map *map)
+int	is_valid_map(t_map *map)
 {
 	int	i;
 	int	j;

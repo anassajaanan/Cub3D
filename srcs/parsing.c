@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 07:26:22 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 03:42:00 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static void	parse_map_to_queue(int fd, t_queue *q)
 {
 	char	*line;
 
+	init_queue(q);
 	line = get_next_line(fd);
 	while (line && is_empty_line(line))
 	{
@@ -135,7 +136,7 @@ int	parse_map(char *file_name, t_map_infos *map_infos)
 			break ;
 		line = get_next_line(fd);
 	}
-	parse_map_to_queue(fd, &map_infos->map);
+	parse_map_to_queue(fd, &map_infos->queue);
 	close(fd);
 	return (SUCCESS);
 }

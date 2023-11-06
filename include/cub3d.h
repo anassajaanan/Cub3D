@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/05 05:01:50 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 04:08:30 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_map_infos
 	t_color		floor_color;
 	t_color		ceiling_color;
 
-	t_queue		map;
+	t_queue		queue;
 
 	int			parsed_color_count;
 	int			parsed_texture_count;
@@ -100,8 +100,6 @@ typedef struct s_map
 	int		rows;
 	char	**map_data;
 }			t_map;
-
-
 
 // #============# free.c #===============#
 void	ft_free(void *ptr);
@@ -124,6 +122,10 @@ int	is_empty_line(char *line);
 int open_map_file(char *file_name);
 
 // #============# map_validation.c #===============#
-int	validate_map_characters(t_map *map);
+int	is_valid_map(t_map *map);
+
+
+// #============# init.c #===============#
+void	init_map_infos(t_map_infos *map_infos);
 
 #endif /* CUB3D_H */
