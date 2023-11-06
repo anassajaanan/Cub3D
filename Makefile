@@ -2,10 +2,11 @@
 NAME = cub3d
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS =	main.c queue.c utils.c free.c \
+SRCS =	main.c queue.c free.c \
 		parsing.c parsing_validation.c parsing_helpers.c \
 		map_validation.c init.c map.c \
-		point.c line.c raycasting.c
+		point.c line.c raycasting.c \
+		player_mouvements.c player_actions.c \
 
 		
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))

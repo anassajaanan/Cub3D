@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:26:34 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 10:56:04 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 13:09:03 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 double	calculate_distance(double x1, double y1, double x2, double y2)
 {
 	if ((int)x2 == -1 && (int)y2 == -1)
-	{
-		// printf("Error: No intersection\n");
 		return (INT_MAX);
-	}
 	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
 }
 
@@ -168,90 +165,51 @@ void	cast_rays(t_params *params)
 		int half_width = 0;
 		double wall_x = half_width + column * column_width;
 		double wall_y = (WINDOW_HEIGHT / 2) - (wall_height / 2);
-	
-		
-		// if (ray.hit == HORIZONTAL)
-		// 	draw_line_img(params, init_point(params->player.x, params->player.y), init_point(ray.x, ray.y), 0x00F0AF);
-		// else
-		// 	draw_line_img(params, init_point(params->player.x, params->player.y), init_point(ray.x, ray.y), 0xE0F0AF);
-		
 
-        /* No textures */
-		draw_line_img(params, init_point(wall_x, wall_y), init_point(wall_x, wall_y + wall_height), ray.color);
-		// draw_line_img(params, init_point(column * column_width, 0), init_point(column * column_width, WINDOW_WIDTH), 0x000000);
+		double texture_x, texture_y;
+		char	*wall_texture;
+		if (ray.hit == HORIZONTAL)
+		{
+			texture_x = (int)ray.x % TILE_SIZE;
+			if (ray.direction > M_PI)
+				texture_x = TILE_SIZE - texture_x - 1;
 
-
-		/* render textures */
-		// double texture_x, texture_y;
-		// int	*wall_image;
-		// if (ray.hit == HORIZONTAL)
-		// {
-		// 	texture_x = (int)ray.x % TILE_SIZE;
-		// 	if (ray.direction > M_PI)
-		// 		texture_x = TILE_SIZE - texture_x - 1;
-		// 	// wall_image = wall5;
-
-		// 	// wall1 for north wall2 for south
-		// 	int mx = (int)(ray.x) / TILE_SIZE;
-		// 	int my = (int)(ray.y - 0.00001) / TILE_SIZE;
-		// 	if (map[my][mx] == '1') // south
-		// 		wall_image = wall2;
-		// 	else
-		// 		wall_image = wall1;
-		// }
-		// else
-		// {
-		// 	texture_x = (int)ray.y % TILE_SIZE;
-		// 	if (ray.direction > M_PI / 2 && ray.direction < 3 * M_PI / 2)
-		// 		texture_x = TILE_SIZE - texture_x - 1;
-		// 	// wall_image = wall3;
-		// 	// wall3 for east wall4 for west
-		// 	int mx = (int)(ray.x - 0.00001) / TILE_SIZE;
-		// 	int my = (int)ray.y / TILE_SIZE;
-		// 	if (map[my][mx] == '1') // west
-		// 		wall_image = wall8;
-		// 	else
-		// 		wall_image = wall5;
-		// }
-		
-
-		// double texture_step = TEXTURE_SIZE / wall_height;
-		// double texture_position = 0;
-		// for (int y = 0; y < wall_height; y++)
-		// {
-		// 	texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
-
-		// 	// int pixel = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * 3;
-		// 	// // check for valid index
-		// 	// if (pixel < 0 || pixel > (TEXTURE_SIZE * TEXTURE_SIZE * 3 - 3))
-		// 	// {
-		// 	// 	// printf("Error: Invalid pixel index: %d\n", pixel);
-		// 	// 	continue;
-		// 	// }
-
-		// 	// int red = wall_image[pixel];
-		// 	// int green = wall_image[pixel + 1];
-		// 	// int blue = wall_image[pixel + 2];
+			// wall1 for north wall2 for south
+			int mx = (int)(ray.x) / TILE_SIZE;
+			int my = (int)(ray.y - 0.00001) / TILE_SIZE;
+			if (params->map.map_data[my][mx] == '1') // south
+				wall_texture = params->south_texture.addr;
+			else // north
+				wall_texture = params->north_texture.addr;
+		}
+		else
+		{
+			texture_x = (int)ray.y % TILE_SIZE;
+			if (ray.direction > M_PI / 2 && ray.direction < 3 * M_PI / 2)
+				texture_x = TILE_SIZE - texture_x - 1;
 			
-
-		// 	// // Shading
-        //     // // double shading_factor = 1.0 - (distance / 1024.0);
-        //     // // shading_factor = (shading_factor < 0.0) ? 0.0 : shading_factor;
-
-        //     // // // Apply shading to the texture color
-        //     // // red = (int)(red * shading_factor);
-        //     // // green = (int)(green * shading_factor);
-        //     // // blue = (int)(blue * shading_factor);
-
-        //     // int hex_color = (red << 16) | (green << 8) | blue;
-
-		// 	int pixel_index = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * params->north_texture.bits_per_pixel / 8;
-		// 	int hex_color = *(unsigned int *)(params->north_texture.addr + pixel_index);
 			
-		// 	// mlx_pixel_put(params->mlx, params->win, wall_x, wall_y + y, hex_color);
-		// 	mlx_pixel_put_img(params->mlx, &params->img, wall_x, wall_y + y, hex_color);
-		// 	texture_position += texture_step;
-		// }
+			// wall3 for east wall4 for west
+			int mx = (int)(ray.x - 0.00001) / TILE_SIZE;
+			int my = (int)ray.y / TILE_SIZE;
+			if (params->map.map_data[my][mx] == '1') // west
+				wall_texture = params->west_texture.addr;
+			else // east
+				wall_texture = params->east_texture.addr;
+		}
+		
+
+		double texture_step = TEXTURE_SIZE / wall_height;
+		double texture_position = 0;
+		for (int y = 0; y < wall_height; y++)
+		{
+			texture_y = (int)texture_position & (TEXTURE_SIZE - 1);
+
+			int pixel_index = ((int)texture_y * TEXTURE_SIZE + (int)texture_x) * params->north_texture.bits_per_pixel / 8;
+			int hex_color = *(unsigned int *)(wall_texture + pixel_index);
+			mlx_pixel_put_img(params->mlx, &params->window_img, wall_x, wall_y + y, hex_color);
+			texture_position += texture_step;
+		}
 
 		// // draw ground
 		draw_line_img(params, init_point(wall_x, wall_y + wall_height), init_point(wall_x, WINDOW_HEIGHT), params->floor_color);

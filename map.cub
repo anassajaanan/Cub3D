@@ -1,16 +1,17 @@
       C 194,217,255
-      NO        ./map.cub   
+	  
+NO ./Textures/wall.xpm
 
-        SO ./map.cub
+SO ./Textures/wall1.xpm
 
-  WE ./map.cub
+WE ./Textures/wall3.xpm
 
-
-
-
+EA ./Textures/wall4.xpm
 
 
-EA ./map.cub
+
+
+
  F 245,245,245
 
 

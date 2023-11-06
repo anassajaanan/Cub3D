@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 10:55:37 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:28:44 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	validate_arguments(int argc, char **argv)
 		ft_printf_fd(2, "Error\nWrong number of arguments\n");
 		return (INVALID_ARG);
 	}
-	if (ft_strlen(argv[1]) < 5 
-		|| ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub", 4) != 0)
+	if (ft_strlen(argv[1]) < 5 || ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4,
+			".cub", 4) != 0)
 	{
 		ft_printf_fd(2, "Error\nWrong file extension\n");
 		return (INVALID_ARG);
@@ -30,17 +30,17 @@ int	validate_arguments(int argc, char **argv)
 	return (SUCCESS);
 }
 
-int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos, t_map *map)
+int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos,
+		t_map *map)
 {
 	int	ret;
-	
+
 	if (validate_arguments(argc, argv) != SUCCESS)
 		return (INVALID_ARG);
-	init_map_infos(map_infos);
 	ret = parse_map(argv[1], map_infos);
 	if (ret == SUCCESS)
 	{
-		convert_queue_to_2D_array(map, &map_infos->queue);
+		convert_queue_to_2d_array(map, &map_infos->queue);
 		if (!is_valid_map(map))
 		{
 			free_2D_array(map->map_data);
@@ -52,17 +52,36 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos, t_map *map
 }
 
 
+
 void	init_params(t_params *params)
+{
+	params->mlx = NULL;
+	params->win = NULL;
+	params->window_img.img = NULL;
+	params->window_img.addr = NULL;
+	params->map_infos.so_path = NULL;
+	params->map_infos.no_path = NULL;
+	params->map_infos.we_path = NULL;
+	params->map_infos.ea_path = NULL;
+	params->map_infos.parsed_color_count = 0;
+	params->map_infos.parsed_texture_count = 0;
+	params->map.map_data = NULL;
+	params->north_texture.img = NULL;
+	params->north_texture.addr = NULL;
+	params->south_texture.img = NULL;
+	params->south_texture.addr = NULL;
+	params->west_texture.img = NULL;
+	params->west_texture.addr = NULL;
+	params->east_texture.img = NULL;
+	params->east_texture.addr = NULL;
+}
+
+void	init_colors(t_params *params)
 {
 	int	red;
 	int	green;
 	int	blue;
-	
-	params->mlx = NULL;
-	params->win = NULL;
-	
-	params->window_img.img = NULL;
-	params->window_img.addr = NULL;
+
 	red = params->map_infos.floor_color.red;
 	green = params->map_infos.floor_color.green;
 	blue = params->map_infos.floor_color.blue;
@@ -73,14 +92,6 @@ void	init_params(t_params *params)
 	params->ceiling_color = (red << 16) | (green << 8) | blue;
 }
 
-void	normalize_direction(double *direction)
-{
-	if (*direction < 0)
-		*direction += 2 * M_PI;
-	if (*direction > 2 * M_PI)
-		*direction -= 2 * M_PI;
-}
-
 int	key_hook(int keycode, t_params *params)
 {
 	if (keycode == 53)
@@ -88,72 +99,107 @@ int	key_hook(int keycode, t_params *params)
 		free_and_cleanup(params);
 		exit(0);
 	}
-	else if (keycode == 123) // left arrow
-	{
-		params->player.direction -= ROTATE_SPEED;
-		normalize_direction(&params->player.direction);
-		params->player.dx = cos(params->player.direction) * MOVE_SPEED;
-		params->player.dy = sin(params->player.direction) * MOVE_SPEED;
-		cast_rays(params);
-	}
-	else if (keycode == 124) // right arrow
-	{
-		params->player.direction += ROTATE_SPEED;
-		normalize_direction(&params->player.direction);
-		params->player.dx = cos(params->player.direction) * MOVE_SPEED;
-		params->player.dy = sin(params->player.direction) * MOVE_SPEED;
-		cast_rays(params);
-	}
-	else if (keycode == 13) // W
-	{
-		params->player.x += params->player.dx;
-		params->player.y += params->player.dy;
-		cast_rays(params);
-	}
-	else if (keycode == 1) // S
-	{
-		params->player.x -= params->player.dx;
-		params->player.y -= params->player.dy;
-		cast_rays(params);
-	}
-	else if (keycode == 0) // A
-	{
-		params->player.x -= cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
-		params->player.y -= sin(params->player.direction + M_PI / 2) * MOVE_SPEED;
-		cast_rays(params);
-	}
-	else if (keycode == 2) // D
-	{
-		params->player.x += cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
-		params->player.y += sin(params->player.direction + M_PI / 2) * MOVE_SPEED;
-		cast_rays(params);
-	}
+	else if (keycode == 123)
+		look_left(params);
+	else if (keycode == 124)
+		look_right(params);
+	else if (keycode == 13)
+		move_up(params);
+	else if (keycode == 1)
+		move_down(params);
+	else if (keycode == 0)
+		move_left(params);
+	else if (keycode == 2)
+		move_right(params);
 	return (0);
 }
 
 int	update_window(t_params *params)
 {
-	mlx_put_image_to_window(params->mlx, params->win, params->window_img.img, 0, 0);
+	mlx_put_image_to_window(params->mlx, params->win, params->window_img.img, 0,
+		0);
 	return (0);
-
 }
 
-int main(int argc, char **argv)
+int	init_image(t_params *params, char *image_path, t_img *image)
+{
+	image->img = mlx_xpm_file_to_image(params->mlx, image_path, &image->width,
+			&image->height);
+	if (!image->img)
+	{
+		ft_printf_fd(2, "Error\nFailed to load texture\n");
+		free_and_cleanup(params);
+		return (IMG_FAIL);
+	}
+	image->addr = mlx_get_data_addr(image->img, &image->bits_per_pixel,
+			&image->line_length, &image->endian);
+	if (!image->addr)
+	{
+		ft_printf_fd(2, "Error\nFailed to load texture\n");
+		free_and_cleanup(params);
+		return (IMG_FAIL);
+	}
+	image->bpp = image->bits_per_pixel / 8;
+	return (SUCCESS);
+}
+
+int	init_textures(t_params *params)
+{
+	if (init_image(params, params->map_infos.no_path,
+			&params->north_texture) != SUCCESS)
+		return (IMG_FAIL);
+	if (init_image(params, params->map_infos.so_path,
+			&params->south_texture) != SUCCESS)
+		return (IMG_FAIL);
+	if (init_image(params, params->map_infos.we_path,
+			&params->west_texture) != SUCCESS)
+		return (IMG_FAIL);
+	if (init_image(params, params->map_infos.ea_path,
+			&params->east_texture) != SUCCESS)
+		return (IMG_FAIL);
+	return (SUCCESS);
+}
+
+int	init_window_image(t_params *params)
+{
+	params->window_img.height = WINDOW_HEIGHT;
+	params->window_img.width = WINDOW_WIDTH;
+	params->window_img.img = mlx_new_image(params->mlx, WINDOW_WIDTH,
+			WINDOW_HEIGHT);
+	if (!params->window_img.img)
+	{
+		free_and_cleanup(params);
+		return (IMG_FAIL);
+	}
+	params->window_img.addr = mlx_get_data_addr(params->window_img.img,
+			&params->window_img.bits_per_pixel, &params->window_img.line_length,
+			&params->window_img.endian);
+	if (!params->window_img.addr)
+	{
+		free_and_cleanup(params);
+		return (IMG_FAIL);
+	}
+	params->window_img.bpp = params->window_img.bits_per_pixel / 8;
+	return (SUCCESS);
+}
+
+int	main(int argc, char **argv)
 {
 	t_params	params;
-	
 
-	if (parse_and_validate(argc, argv, &params.map_infos, &params.map) != SUCCESS)
-		return (1);
 	init_params(&params);
+	if (parse_and_validate(argc, argv, &params.map_infos,
+			&params.map) != SUCCESS)
+		return (1);
 	params.mlx = mlx_init();
-	params.win = mlx_new_window(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3d");
-	if (init_window_image(&params) != SUCCESS)
+	params.win = mlx_new_window(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
+			"cub3d");
+	if (init_window_image(&params) != SUCCESS
+		|| init_textures(&params) != SUCCESS)
 		return (1);
 	init_player(&params);
-	
-	
-	
+	init_colors(&params);
+	cast_rays(&params);
 	mlx_key_hook(params.win, key_hook, &params);
 	mlx_loop_hook(params.mlx, update_window, &params);
 	mlx_loop(params.mlx);

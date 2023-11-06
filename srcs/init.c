@@ -6,44 +6,13 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:43:28 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 10:12:53 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:24:50 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	init_map_infos(t_map_infos *map_infos)
-{
-	map_infos->so_path = NULL;
-	map_infos->no_path = NULL;
-	map_infos->we_path = NULL;
-	map_infos->ea_path = NULL;
-	map_infos->parsed_color_count = 0;
-	map_infos->parsed_texture_count = 0;
-}
 
-int	init_window_image(t_params *params)
-{
-	params->window_img.height = WINDOW_HEIGHT;
-	params->window_img.width = WINDOW_WIDTH;
-	params->window_img.img = mlx_new_image(params->mlx,
-			WINDOW_WIDTH, WINDOW_HEIGHT);
-	if (!params->window_img.img)
-	{
-		free_and_cleanup(params);
-		return (IMG_FAIL);
-	}
-	params->window_img.addr = mlx_get_data_addr(params->window_img.img,
-			&params->window_img.bits_per_pixel, &params->window_img.line_length,
-			&params->window_img.endian);
-	if (!params->window_img.addr)
-	{
-		free_and_cleanup(params);
-		return (IMG_FAIL);
-	}
-	params->window_img.bpp = params->window_img.bits_per_pixel / 8;
-	return (SUCCESS);
-}
 
 static void	init_player_pos(t_params *params, int i, int j)
 {

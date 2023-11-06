@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 10:53:22 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:26:16 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,9 +182,6 @@ void	ft_free(void *ptr);
 void	free_split_array(char **array);
 void	free_and_cleanup(t_params *params);
 
-// #============# utils.c #===============#
-int	is_numeric(char *str);
-
 // #============# parsing.c #===============#
 int	parse_map(char *file_name, t_map_infos *map_infos);
 
@@ -197,20 +194,19 @@ int startswith(char **array, char *str);
 int	array_size(char **array);
 int	is_empty_line(char *line);
 int open_map_file(char *file_name);
+int	is_numeric(char *str);
 
 // #============# map_validation.c #===============#
 int	is_valid_map(t_map *map);
 
 
 // #============# init.c #===============#
-void	init_map_infos(t_map_infos *map_infos);
 void	free_2D_array(char **map);
 void	free_map_infos(t_map_infos *map_infos);
-int		init_window_image(t_params *params);
 void	init_player(t_params *params);
 
 // #============# map.c #===============#
-void	convert_queue_to_2D_array(t_map *map, t_queue *queue);
+void	convert_queue_to_2d_array(t_map *map, t_queue *queue);
 
 // point.c
 t_point	init_point(int x, int y);
@@ -223,6 +219,19 @@ void	draw_line_img(t_params *params, t_point p1, t_point p2, int color);
 
 // raycasting.c
 void	cast_rays(t_params *params);
+
+// player_mouvements.c
+void	look_left(t_params *params);
+void	look_right(t_params *params);
+void	move_up(t_params *params);
+void	move_down(t_params *params);
+void	move_left(t_params *params);
+void	move_right(t_params *params);
+
+// player_actions.c
+void	normalize_direction(double *direction);
+void	look_left(t_params *params);
+void	look_right(t_params *params);
 
 
 #endif /* CUB3D_H */

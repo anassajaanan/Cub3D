@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 09:47:49 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 10:51:42 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:10:27 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static int	find_max_columns_in_queue(t_queue *queue)
 	return (max);
 }
 
-static void	add_row_to_2D_array(char **map, t_queue *queue, int *index, int columns)
+static void	add_row_to_2d_array(char **map, t_queue *queue, int *index,
+									int columns)
 {
 	int		i;
 	char	*old_row;
@@ -69,7 +70,7 @@ static void	add_row_to_2D_array(char **map, t_queue *queue, int *index, int colu
 	ft_free(old_row);
 }
 
-void	convert_queue_to_2D_array(t_map *map, t_queue *queue)
+void	convert_queue_to_2d_array(t_map *map, t_queue *queue)
 {
 	int		index;
 
@@ -78,6 +79,6 @@ void	convert_queue_to_2D_array(t_map *map, t_queue *queue)
 	map->cols = find_max_columns_in_queue(queue);
 	map->map_data = (char **)malloc(sizeof(char *) * (map->rows + 1));
 	while (queue->front)
-		add_row_to_2D_array(map->map_data, queue, &index, map->cols);
+		add_row_to_2d_array(map->map_data, queue, &index, map->cols);
 	map->map_data[index] = NULL;
 }

@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   line.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/06 15:07:46 by aajaanan          #+#    #+#             */
+/*   Updated: 2023/11/06 15:08:22 by aajaanan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/cub3d.h"
 
-
-
-void	dda(t_params *params, t_point p1, t_point p2, int color) // Digital differential analyzer Algorithm
+static void	dda(t_params *params, t_point p1, t_point p2, int color)
 {
 	int			i;
 	t_fpoint	p;
@@ -27,7 +37,8 @@ void	dda(t_params *params, t_point p1, t_point p2, int color) // Digital differe
 	}
 }
 
-static void	init_bresenham_params(t_point p1, t_point p2, t_point *delta, t_point *sign)
+static void	init_bresenham_params(t_point p1, t_point p2, t_point *delta,
+									t_point *sign)
 {
 	delta->x = abs(p2.x - p1.x);
 	delta->y = -abs(p2.y - p1.y);
@@ -41,7 +52,7 @@ static void	init_bresenham_params(t_point p1, t_point p2, t_point *delta, t_poin
 		sign->y = -1;
 }
 
-static void	bresenham(t_params *params, t_point p1, t_point p2, int color) // Bresenham's line algorithm
+void	draw_line(t_params *params, t_point p1, t_point p2, int color)
 {
 	t_point	delta;
 	t_point	sign;
@@ -69,13 +80,6 @@ static void	bresenham(t_params *params, t_point p1, t_point p2, int color) // Br
 	}
 }
 
-void	draw_line(t_params *params, t_point p1, t_point p2, int color)
-{
-	// dda(params, p1, p2, color);
-	bresenham(params, p1, p2, color);
-}
-
-// draw line on the image
 void	draw_line_img(t_params *params, t_point p1, t_point p2, int color)
 {
 	t_point	delta;
@@ -87,7 +91,6 @@ void	draw_line_img(t_params *params, t_point p1, t_point p2, int color)
 	err = delta.x + delta.y;
 	while (1)
 	{
-		// mlx_pixel_put(params->mlx, params->win, p1.x, p1.y, color);
 		mlx_pixel_put_img(params->mlx, &params->window_img, p1.x, p1.y, color);
 		if (p1.x == p2.x && p1.y == p2.y)
 			break ;
