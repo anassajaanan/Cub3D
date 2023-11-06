@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/05 06:04:37 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 07:26:22 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	parse_map(char *file_name, t_map_infos *map_infos)
 
 	fd = open_map_file(file_name);
 	if (fd == -1)
-		return (OPEN_ERR);
+		return (ft_printf_fd(2, "Error\nCould not open file\n"), OPEN_ERR);
 	line = get_next_line(fd);
 	while (line)
 	{

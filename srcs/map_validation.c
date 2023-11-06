@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 04:54:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/05 06:59:07 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 07:16:53 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ static int	has_valid_neighbors(t_map *map, int i, int j)
 
 static int	validate_map_element(t_map *map, int i, int j)
 {
+	char	c;
+
+	c = map->map_data[i][j];
 	if (i == 0 || i == map->rows - 1 || j == 0 || j == map->cols - 1)
 	{
-		if (map->map_data[i][j] != '1' && map->map_data[i][j] != ' ')
+		if (c != '1' && c != ' ')
 		{
 			ft_printf_fd(2, "Error\nMap is not enclosed 1\n");
 			return (0);

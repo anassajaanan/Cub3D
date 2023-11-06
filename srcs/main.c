@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/05 05:05:18 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 07:26:44 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,26 @@ void	free_2D_array(char **map)
 	ft_free(map);
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	t_map_infos	map_infos;
 	t_map		map;
 	int ret;
+	char	*map_path;
+
+	if (argc != 2)
+	{
+		ft_printf_fd(2, "Error\nWrong number of arguments\n");
+		return (INVALID_ARG);
+	}
+	map_path = argv[1];
+	// map_pathshould end with .cub
+	if (ft_strlen(map_path) < 5 || ft_strncmp(map_path + ft_strlen(map_path) - 4, ".cub", 4) != 0)
+	{
+		ft_printf_fd(2, "Error\nWrong file extension\n");
+		return (WRONG_INPUT);
+	}
 	
-	char	map_path[] = "./map.cub";
 
 	init_map_infos(&map_infos);
 	init_queue(&map_infos.map);
@@ -135,29 +148,6 @@ int main()
 
 	if (ret == SUCCESS)
 	{
-		// printf("NO: %s\n", map_infos.north_texture.path);
-		// printf("SO: %s\n", map_infos.south_texture.path);
-		// printf("WE: %s\n", map_infos.west_texture.path);
-		// printf("EA: %s\n", map_infos.east_texture.path);
-		// printf("F: %d, %d, %d\n", map_infos.floor_color.red, map_infos.floor_color.green, map_infos.floor_color.blue);
-		// printf("C: %d, %d, %d\n", map_infos.ceiling_color.red, map_infos.ceiling_color.green, map_infos.ceiling_color.blue);
-		// printf("Map:\n");
-		// t_queue_node	*tmp = map_infos.map.front;
-		// while (tmp)
-		// {
-		// 	printf("%s", tmp->val);
-		// 	tmp = tmp->next;
-		// }
-
-		// printf("\n\nMap 2D:\n");
-		// convert_queue_to_2D_array(&map, &map_infos.map);
-		// char	**map_2d = map.map_data;
-		// int		i = 0;
-		// while (map_2d[i])
-		// {
-		// 	printf("{%s}\n", map_2d[i]);
-		// 	i++;
-		// }
 
 		convert_queue_to_2D_array(&map, &map_infos.map);
 		int is_valid = validate_map_characters(&map);
