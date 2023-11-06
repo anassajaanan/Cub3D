@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 05:12:11 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 10:53:22 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,16 @@
 # include "../lib/mlx/mlx.h"
 
 
-#define WINDOW_WIDTH 2048
+#define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 1024
+#define RESOLUTION 1024
+#define TILE_SIZE 64
+#define TEXTURE_SIZE 64
+#define MOVE_SPEED 20
+#define ROTATE_SPEED 0.1
+
+#define HORIZONTAL 0
+#define VERTICAL 1
 
 typedef enum e_error
 {
@@ -69,6 +77,18 @@ void					free_queue(t_queue *q);
 
 
 // #===========# parsing.c #=============#
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}	t_point;
+
+typedef struct s_fpoint
+{
+	float	x;
+	float	y;
+}			t_fpoint;
 
 typedef struct s_color
 {
@@ -125,8 +145,10 @@ typedef struct s_ray
 {
 	double	x;
 	double	y;
+	double	direction;
 	double	length;
 	int		hit;
+	int		color;
 }			t_ray;
 
 
@@ -147,6 +169,9 @@ typedef struct s_params
 	t_img		south_texture;
 	t_img		west_texture;
 	t_img		east_texture;
+
+	int			floor_color;
+	int			ceiling_color;
 	
 }				t_params;
 
@@ -155,6 +180,7 @@ typedef struct s_params
 // #============# free.c #===============#
 void	ft_free(void *ptr);
 void	free_split_array(char **array);
+void	free_and_cleanup(t_params *params);
 
 // #============# utils.c #===============#
 int	is_numeric(char *str);
@@ -178,5 +204,25 @@ int	is_valid_map(t_map *map);
 
 // #============# init.c #===============#
 void	init_map_infos(t_map_infos *map_infos);
+void	free_2D_array(char **map);
+void	free_map_infos(t_map_infos *map_infos);
+int		init_window_image(t_params *params);
+void	init_player(t_params *params);
+
+// #============# map.c #===============#
+void	convert_queue_to_2D_array(t_map *map, t_queue *queue);
+
+// point.c
+t_point	init_point(int x, int y);
+int	mlx_pixel_put_img(void *mlx_ptr, t_img *img_ptr, int x, int y, int color);
+
+
+// line.c
+void	draw_line(t_params *params, t_point p1, t_point p2, int color);
+void	draw_line_img(t_params *params, t_point p1, t_point p2, int color);
+
+// raycasting.c
+void	cast_rays(t_params *params);
+
 
 #endif /* CUB3D_H */

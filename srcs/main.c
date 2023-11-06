@@ -6,111 +6,13 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 05:30:24 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 10:55:37 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+#include <math.h>
 #include <unistd.h>
-
-
-
-
-void	free_map_infos(t_map_infos *map_infos)
-{
-	ft_free(map_infos->no_path);
-	ft_free(map_infos->so_path);
-	ft_free(map_infos->we_path);
-	ft_free(map_infos->ea_path);
-
-	free_queue(&map_infos->queue);
-}
-
-int	count_rows_in_queue(t_queue *queue)
-{
-	int				i;
-	t_queue_node	*tmp;
-
-	i = 0;
-	tmp = queue->front;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
-}
-
-int	find_max_columns_in_queue(t_queue *queue)
-{
-	int				max;
-	int				len;
-	t_queue_node	*tmp;
-
-	max = INT_MIN;
-	tmp = queue->front;
-	while (tmp)
-	{
-		len = ft_strlen(tmp->val);
-		if (len > max)
-			max = len;
-		tmp = tmp->next;
-	}
-	return (max);
-}
-
-void	add_row_to_2D_array(char **map, t_queue *queue, int *index, int columns)
-{
-	int		i;
-	char	*old_row;
-	char	*new_row;
-	int		old_row_len;
-
-	i = 0;
-	old_row = dequeue(queue);
-	old_row_len = ft_strlen(old_row);
-	new_row = (char *)malloc(sizeof(char) * (columns));
-	while (i < old_row_len - 1)
-	{
-		if (old_row[i] == ' ')
-			new_row[i] = ' ';
-		else
-			new_row[i] = old_row[i];
-		i++;
-	}
-	while (i < columns - 1)
-		new_row[i++] = ' ';
-	new_row[i] = '\0';
-	map[*index] = new_row;
-	(*index)++;
-	ft_free(old_row);
-}
-
-void	convert_queue_to_2D_array(t_map *map, t_queue *queue)
-{
-	int		index;
-
-	index = 0;
-	map->rows = count_rows_in_queue(queue);
-	map->cols = find_max_columns_in_queue(queue);
-	map->map_data = (char **)malloc(sizeof(char *) * (map->rows + 1));
-	while (queue->front)
-		add_row_to_2D_array(map->map_data, queue, &index, map->cols);
-	map->map_data[index] = NULL;
-}
-
-void	free_2D_array(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-	{
-		ft_free(map[i]);
-		i++;
-	}
-	ft_free(map);
-}
 
 int	validate_arguments(int argc, char **argv)
 {
@@ -149,47 +51,92 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos, t_map *map
 	return (ret);
 }
 
-void	free_and_cleanup(t_params *params)
-{
-	free_2D_array(params->map.map_data);
-	free_map_infos(&params->map_infos);
-	if (params->window_img.img)
-		mlx_destroy_image(params->mlx, params->window_img.img);
-	if (params->win)
-		mlx_destroy_window(params->mlx, params->win);
-}
-
-int	init_window_image(t_params *params)
-{
-	params->window_img.height = WINDOW_HEIGHT;
-	params->window_img.width = WINDOW_WIDTH;
-	params->window_img.img = mlx_new_image(params->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	if (!params->window_img.img)
-	{
-		free_and_cleanup(params);
-		return (IMG_FAIL);
-	}
-	params->window_img.addr = mlx_get_data_addr(params->window_img.img, &params->window_img.bits_per_pixel, &params->window_img.line_length, &params->window_img.endian);
-	if (!params->window_img.addr)
-	{
-		free_and_cleanup(params);
-		return (IMG_FAIL);
-	}
-	params->window_img.bpp = params->window_img.bits_per_pixel / 8;
-	return (SUCCESS);
-}
 
 void	init_params(t_params *params)
 {
+	int	red;
+	int	green;
+	int	blue;
+	
 	params->mlx = NULL;
 	params->win = NULL;
 	
 	params->window_img.img = NULL;
 	params->window_img.addr = NULL;
-	
+	red = params->map_infos.floor_color.red;
+	green = params->map_infos.floor_color.green;
+	blue = params->map_infos.floor_color.blue;
+	params->floor_color = (red << 16) | (green << 8) | blue;
+	red = params->map_infos.ceiling_color.red;
+	green = params->map_infos.ceiling_color.green;
+	blue = params->map_infos.ceiling_color.blue;
+	params->ceiling_color = (red << 16) | (green << 8) | blue;
 }
 
+void	normalize_direction(double *direction)
+{
+	if (*direction < 0)
+		*direction += 2 * M_PI;
+	if (*direction > 2 * M_PI)
+		*direction -= 2 * M_PI;
+}
 
+int	key_hook(int keycode, t_params *params)
+{
+	if (keycode == 53)
+	{
+		free_and_cleanup(params);
+		exit(0);
+	}
+	else if (keycode == 123) // left arrow
+	{
+		params->player.direction -= ROTATE_SPEED;
+		normalize_direction(&params->player.direction);
+		params->player.dx = cos(params->player.direction) * MOVE_SPEED;
+		params->player.dy = sin(params->player.direction) * MOVE_SPEED;
+		cast_rays(params);
+	}
+	else if (keycode == 124) // right arrow
+	{
+		params->player.direction += ROTATE_SPEED;
+		normalize_direction(&params->player.direction);
+		params->player.dx = cos(params->player.direction) * MOVE_SPEED;
+		params->player.dy = sin(params->player.direction) * MOVE_SPEED;
+		cast_rays(params);
+	}
+	else if (keycode == 13) // W
+	{
+		params->player.x += params->player.dx;
+		params->player.y += params->player.dy;
+		cast_rays(params);
+	}
+	else if (keycode == 1) // S
+	{
+		params->player.x -= params->player.dx;
+		params->player.y -= params->player.dy;
+		cast_rays(params);
+	}
+	else if (keycode == 0) // A
+	{
+		params->player.x -= cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
+		params->player.y -= sin(params->player.direction + M_PI / 2) * MOVE_SPEED;
+		cast_rays(params);
+	}
+	else if (keycode == 2) // D
+	{
+		params->player.x += cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
+		params->player.y += sin(params->player.direction + M_PI / 2) * MOVE_SPEED;
+		cast_rays(params);
+	}
+	return (0);
+}
+
+int	update_window(t_params *params)
+{
+	mlx_put_image_to_window(params->mlx, params->win, params->window_img.img, 0, 0);
+	return (0);
+
+}
 
 int main(int argc, char **argv)
 {
@@ -203,7 +150,11 @@ int main(int argc, char **argv)
 	params.win = mlx_new_window(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3d");
 	if (init_window_image(&params) != SUCCESS)
 		return (1);
+	init_player(&params);
 	
-		
-	free_and_cleanup(&params);
+	
+	
+	mlx_key_hook(params.win, key_hook, &params);
+	mlx_loop_hook(params.mlx, update_window, &params);
+	mlx_loop(params.mlx);
 }
