@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 04:43:43 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 05:12:11 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 # include <sys/uio.h>
 # include "../lib/libft/include/libft.h"
 # include "../lib/mlx/mlx.h"
+
+
+#define WINDOW_WIDTH 2048
+#define WINDOW_HEIGHT 1024
 
 typedef enum e_error
 {
@@ -96,6 +100,18 @@ typedef struct s_map
 	char	**map_data;
 }			t_map;
 
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;	
+	int		bpp;	
+	int		line_length;
+	int		endian;
+	int		width;
+	int		height;
+}			t_img;
+
 typedef struct s_player
 {
 	double	x;
@@ -105,14 +121,33 @@ typedef struct s_player
 	double	direction;
 }			t_player;
 
+typedef struct s_ray
+{
+	double	x;
+	double	y;
+	double	length;
+	int		hit;
+}			t_ray;
+
 
 typedef struct s_params
 {
 	void		*mlx;
 	void		*win;
+	t_img		window_img;
+	
 	t_map		map;
 	t_map_infos	map_infos;
+	
 	t_player	player;
+	t_ray		ray;
+
+	
+	t_img		north_texture;
+	t_img		south_texture;
+	t_img		west_texture;
+	t_img		east_texture;
+	
 }				t_params;
 
 

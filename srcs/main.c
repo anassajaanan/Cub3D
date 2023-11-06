@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 04:45:27 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 05:30:24 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,16 +149,61 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos, t_map *map
 	return (ret);
 }
 
+void	free_and_cleanup(t_params *params)
+{
+	free_2D_array(params->map.map_data);
+	free_map_infos(&params->map_infos);
+	if (params->window_img.img)
+		mlx_destroy_image(params->mlx, params->window_img.img);
+	if (params->win)
+		mlx_destroy_window(params->mlx, params->win);
+}
+
+int	init_window_image(t_params *params)
+{
+	params->window_img.height = WINDOW_HEIGHT;
+	params->window_img.width = WINDOW_WIDTH;
+	params->window_img.img = mlx_new_image(params->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	if (!params->window_img.img)
+	{
+		free_and_cleanup(params);
+		return (IMG_FAIL);
+	}
+	params->window_img.addr = mlx_get_data_addr(params->window_img.img, &params->window_img.bits_per_pixel, &params->window_img.line_length, &params->window_img.endian);
+	if (!params->window_img.addr)
+	{
+		free_and_cleanup(params);
+		return (IMG_FAIL);
+	}
+	params->window_img.bpp = params->window_img.bits_per_pixel / 8;
+	return (SUCCESS);
+}
+
+void	init_params(t_params *params)
+{
+	params->mlx = NULL;
+	params->win = NULL;
+	
+	params->window_img.img = NULL;
+	params->window_img.addr = NULL;
+	
+}
+
+
+
 int main(int argc, char **argv)
 {
-	t_map_infos	map_infos;
-	t_map		map;
+	t_params	params;
 	
 
-	if (parse_and_validate(argc, argv, &map_infos, &map) != SUCCESS)
+	if (parse_and_validate(argc, argv, &params.map_infos, &params.map) != SUCCESS)
+		return (1);
+	init_params(&params);
+	params.mlx = mlx_init();
+	params.win = mlx_new_window(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3d");
+	if (init_window_image(&params) != SUCCESS)
 		return (1);
 	
-
-	free_2D_array(map.map_data);
-	free_map_infos(&map_infos);
+		
+	free_and_cleanup(&params);
 }
