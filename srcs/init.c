@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:43:28 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:28:54 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:40:44 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,43 @@ void	init_player(t_params *params)
 		}
 		i++;
 	}
+}
+
+void	init_params(t_params *params)
+{
+	params->mlx = NULL;
+	params->win = NULL;
+	params->window_img.img = NULL;
+	params->window_img.addr = NULL;
+	params->map_infos.so_path = NULL;
+	params->map_infos.no_path = NULL;
+	params->map_infos.we_path = NULL;
+	params->map_infos.ea_path = NULL;
+	params->map_infos.parsed_color_count = 0;
+	params->map_infos.parsed_texture_count = 0;
+	params->map.map_data = NULL;
+	params->north_texture.img = NULL;
+	params->north_texture.addr = NULL;
+	params->south_texture.img = NULL;
+	params->south_texture.addr = NULL;
+	params->west_texture.img = NULL;
+	params->west_texture.addr = NULL;
+	params->east_texture.img = NULL;
+	params->east_texture.addr = NULL;
+}
+
+void	init_colors(t_params *params)
+{
+	int	red;
+	int	green;
+	int	blue;
+
+	red = params->map_infos.floor_color.red;
+	green = params->map_infos.floor_color.green;
+	blue = params->map_infos.floor_color.blue;
+	params->floor_color = (red << 16) | (green << 8) | blue;
+	red = params->map_infos.ceiling_color.red;
+	green = params->map_infos.ceiling_color.green;
+	blue = params->map_infos.ceiling_color.blue;
+	params->ceiling_color = (red << 16) | (green << 8) | blue;
 }

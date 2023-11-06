@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 15:07:46 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 15:08:22 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:45:02 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	draw_line_img(t_params *params, t_point p1, t_point p2, int color)
 	err = delta.x + delta.y;
 	while (1)
 	{
-		mlx_pixel_put_img(params->mlx, &params->window_img, p1.x, p1.y, color);
+		mlx_pixel_put_img(params, p1.x, p1.y, color);
 		if (p1.x == p2.x && p1.y == p2.y)
 			break ;
 		e2 = 2 * err;

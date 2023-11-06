@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 15:15:43 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:41:18 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,3 @@ int	is_numeric(char *str)
 	}
 	return (1);
 }
-

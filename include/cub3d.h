@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:32:04 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 19:33:18 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 #define TEXTURE_SIZE 64
 #define MOVE_SPEED 20
 #define ROTATE_SPEED 0.1
+#define FOV M_PI / 3
 
 #define HORIZONTAL 0
 #define VERTICAL 1
@@ -148,7 +149,6 @@ typedef struct s_ray
 	double	direction;
 	double	length;
 	int		hit;
-	int		color;
 }			t_ray;
 
 
@@ -172,6 +172,13 @@ typedef struct s_params
 
 	int			floor_color;
 	int			ceiling_color;
+
+	double		wall_height;
+	int			texture_x;
+	int			texture_y;
+	char		*wall_texture;
+	int			column;
+	int			wall_y;
 	
 }				t_params;
 
@@ -181,6 +188,8 @@ typedef struct s_params
 void	ft_free(void *ptr);
 void	free_split_array(char **array);
 void	free_and_cleanup(t_params *params);
+void	free_2d_array(char **map);
+void	free_map_infos(t_map_infos *map_infos);
 
 // #============# parsing.c #===============#
 int	parse_map(char *file_name, t_map_infos *map_infos);
@@ -201,16 +210,16 @@ int	is_valid_map(t_map *map);
 
 
 // #============# init.c #===============#
-void	free_2D_array(char **map);
-void	free_map_infos(t_map_infos *map_infos);
 void	init_player(t_params *params);
+void	init_params(t_params *params);
+void	init_colors(t_params *params);
 
 // #============# map.c #===============#
 void	convert_queue_to_2d_array(t_map *map, t_queue *queue);
 
 // point.c
 t_point	init_point(int x, int y);
-int	mlx_pixel_put_img(void *mlx_ptr, t_img *img_ptr, int x, int y, int color);
+int	mlx_pixel_put_img(t_params *params, int x, int y, int color);
 
 
 // line.c
@@ -235,6 +244,12 @@ void	look_right(t_params *params);
 
 // init_images.c
 int init_images(t_params *params);
+
+
+// ray_intersections.c
+double		calculate_distance(double x1, double y1, double x2, double y2);
+t_fpoint	horizontal_ray_intersection(t_params *params, double angle);
+t_fpoint	vertical_ray_intersection(t_params *params, double angle);
 
 
 #endif /* CUB3D_H */

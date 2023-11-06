@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:29:35 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:33:44 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:40:57 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	init_window_image(t_params *params)
 	return (SUCCESS);
 }
 
-int init_images(t_params *params)
+int	init_images(t_params *params)
 {
 	if (init_window_image(params) != SUCCESS
 		|| init_textures(params) != SUCCESS)

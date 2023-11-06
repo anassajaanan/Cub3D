@@ -1,46 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting.c                                       :+:      :+:    :+:   */
+/*   vertical_raycasting.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 10:26:34 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 19:34:58 by aajaanan         ###   ########.fr       */
+/*   Created: 2023/11/06 16:51:58 by aajaanan          #+#    #+#             */
+/*   Updated: 2023/11/06 19:33:40 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
-void	ray_intersection(t_params *params, t_ray *ray, double angle)
-{
-	t_fpoint	horizontal;
-	t_fpoint	vertical;
-	double		horizontal_distance;
-	double		vertical_distance;
-
-	ray->direction = angle;
-	horizontal = horizontal_ray_intersection(params, angle);
-	vertical = vertical_ray_intersection(params, angle);
-	horizontal_distance = calculate_distance(params->player.x, params->player.y,
-			horizontal.x, horizontal.y);
-	vertical_distance = calculate_distance(params->player.x, params->player.y,
-			vertical.x, vertical.y);
-	if (horizontal_distance < vertical_distance)
-	{
-		ray->x = horizontal.x;
-		ray->y = horizontal.y;
-		ray->length = horizontal_distance;
-		ray->hit = HORIZONTAL;
-	}
-	else
-	{
-		ray->x = vertical.x;
-		ray->y = vertical.y;
-		ray->length = vertical_distance;
-		ray->hit = VERTICAL;
-	}
-}
+#include <math.h>
 
 
 void	determine_horizontal_texture(t_params *params, t_ray *ray)
@@ -99,40 +70,8 @@ void	render_wall_texture(t_params *params, t_ray *ray)
 		params->texture_y = (int)texture_pos & (TEXTURE_SIZE - 1);
 		pixel_index = ((int)params->texture_y * TEXTURE_SIZE + (int)params->texture_x) * params->north_texture.bits_per_pixel / 8;
 		hex_color = *(unsigned int *)(params->wall_texture + pixel_index);
-		mlx_pixel_put_img(params, params->column, params->wall_y + y, hex_color);
+		mlx_pixel_put_img(params, column, params->wall_y + y, hex_color);
 		texture_pos += texture_step;
 		y++;
-	}
-}
-
-
-
-
-void	cast_rays(t_params *params)
-{
-	double	angle;
-	double	ray_angle;
-	double	column_increment;
-	t_ray	ray;
-
-	column_increment = FOV / WINDOW_WIDTH;
-	angle = params->player.direction - (FOV / 2);
-	for (int column = 0; column < WINDOW_WIDTH; column++)
-	{
-		ray_angle = angle + (column * column_increment);
-		normalize_direction(&ray_angle);
-		ray_intersection(params, &ray, ray_angle);
-		ray.length *= cos(ray_angle - params->player.direction);
-		params->wall_height = (WINDOW_HEIGHT * TILE_SIZE) / ray.length;
-		params->wall_y = (WINDOW_HEIGHT / 2) - (params->wall_height / 2);
-		params->column = column;
-		determine_wall_texture(params, &ray);
-		render_wall_texture(params, &ray);
-
-		// // draw ground
-		draw_line_img(params, init_point(column, params->wall_y + params->wall_height), init_point(column, WINDOW_HEIGHT), params->floor_color);
-
-		// // draw ceiling
-		draw_line_img(params, init_point(column, 0), init_point(column, params->wall_y), params->ceiling_color);
 	}
 }

@@ -6,13 +6,11 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:32:58 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:40:06 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-#include <math.h>
-#include <unistd.h>
 
 int	validate_arguments(int argc, char **argv)
 {
@@ -43,53 +41,12 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos,
 		convert_queue_to_2d_array(map, &map_infos->queue);
 		if (!is_valid_map(map))
 		{
-			free_2D_array(map->map_data);
+			free_2d_array(map->map_data);
 			free_map_infos(map_infos);
 			return (WRONG_MAP);
 		}
 	}
 	return (ret);
-}
-
-
-
-void	init_params(t_params *params)
-{
-	params->mlx = NULL;
-	params->win = NULL;
-	params->window_img.img = NULL;
-	params->window_img.addr = NULL;
-	params->map_infos.so_path = NULL;
-	params->map_infos.no_path = NULL;
-	params->map_infos.we_path = NULL;
-	params->map_infos.ea_path = NULL;
-	params->map_infos.parsed_color_count = 0;
-	params->map_infos.parsed_texture_count = 0;
-	params->map.map_data = NULL;
-	params->north_texture.img = NULL;
-	params->north_texture.addr = NULL;
-	params->south_texture.img = NULL;
-	params->south_texture.addr = NULL;
-	params->west_texture.img = NULL;
-	params->west_texture.addr = NULL;
-	params->east_texture.img = NULL;
-	params->east_texture.addr = NULL;
-}
-
-void	init_colors(t_params *params)
-{
-	int	red;
-	int	green;
-	int	blue;
-
-	red = params->map_infos.floor_color.red;
-	green = params->map_infos.floor_color.green;
-	blue = params->map_infos.floor_color.blue;
-	params->floor_color = (red << 16) | (green << 8) | blue;
-	red = params->map_infos.ceiling_color.red;
-	green = params->map_infos.ceiling_color.green;
-	blue = params->map_infos.ceiling_color.blue;
-	params->ceiling_color = (red << 16) | (green << 8) | blue;
 }
 
 int	key_hook(int keycode, t_params *params)
@@ -120,8 +77,6 @@ int	update_window(t_params *params)
 		0);
 	return (0);
 }
-
-
 
 int	main(int argc, char **argv)
 {

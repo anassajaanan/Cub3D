@@ -7,7 +7,8 @@ SRCS =	main.c queue.c free.c \
 		map_validation.c init.c map.c \
 		point.c line.c raycasting.c \
 		player_mouvements.c player_actions.c \
-		init_images.c 
+		init_images.c \
+		ray_intersection.c 
 
 		
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
@@ -17,7 +18,7 @@ OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 CC = cc
 # CFLAGS = -Wall -Wextra -Werror -Imlx -g3 -fsanitize=address
 # CFLAGS = -Wall -Wextra -Werror -Imlx
-CFLAGS = -Imlx
+CFLAGS = -Imlx -g3 -fsanitize=address
 LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
 INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
 
