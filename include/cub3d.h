@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 04:08:30 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 04:43:43 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,6 @@ void					free_queue(t_queue *q);
 
 // #===========# parsing.c #=============#
 
-typedef struct s_texture
-{
-	char	*path;
-}			t_texture;
-
 typedef struct s_color
 {
 	int	red;
@@ -80,10 +75,10 @@ typedef struct s_color
 
 typedef struct s_map_infos
 {
-	t_texture	north_texture;
-	t_texture	south_texture;
-	t_texture	west_texture;
-	t_texture	east_texture;
+	char		*no_path;
+	char		*so_path;
+	char		*we_path;
+	char		*ea_path;
 	
 	t_color		floor_color;
 	t_color		ceiling_color;
@@ -100,6 +95,27 @@ typedef struct s_map
 	int		rows;
 	char	**map_data;
 }			t_map;
+
+typedef struct s_player
+{
+	double	x;
+	double	y;
+	double	dx;
+	double	dy;
+	double	direction;
+}			t_player;
+
+
+typedef struct s_params
+{
+	void		*mlx;
+	void		*win;
+	t_map		map;
+	t_map_infos	map_infos;
+	t_player	player;
+}				t_params;
+
+
 
 // #============# free.c #===============#
 void	ft_free(void *ptr);

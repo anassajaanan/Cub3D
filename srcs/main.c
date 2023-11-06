@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 04:04:00 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 04:45:27 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 
 void	free_map_infos(t_map_infos *map_infos)
 {
-	ft_free(map_infos->north_texture.path);
-	ft_free(map_infos->south_texture.path);
-	ft_free(map_infos->west_texture.path);
-	ft_free(map_infos->east_texture.path);
+	ft_free(map_infos->no_path);
+	ft_free(map_infos->so_path);
+	ft_free(map_infos->we_path);
+	ft_free(map_infos->ea_path);
 
 	free_queue(&map_infos->queue);
 }

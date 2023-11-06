@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:43:28 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 03:43:48 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 04:45:06 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	init_map_infos(t_map_infos *map_infos)
 {
-	map_infos->south_texture.path = NULL;
-	map_infos->north_texture.path = NULL;
-	map_infos->west_texture.path = NULL;
-	map_infos->east_texture.path = NULL;
+	map_infos->so_path = NULL;
+	map_infos->no_path = NULL;
+	map_infos->we_path = NULL;
+	map_infos->ea_path = NULL;
 
 	map_infos->parsed_color_count = 0;
 	map_infos->parsed_texture_count = 0;

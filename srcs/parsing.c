@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 03:42:00 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 04:45:43 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ a valid and accessible file path for the texture.\n");
 		return (WRONG_MAP);
 	}
 	if (ft_strcmp(array[0], "NO") == 0)
-		map_infos->north_texture.path = ft_strdup(array[1]);
+		map_infos->no_path = ft_strdup(array[1]);
 	else if (ft_strcmp(array[0], "SO") == 0)
-		map_infos->south_texture.path = ft_strdup(array[1]);
+		map_infos->so_path = ft_strdup(array[1]);
 	else if (ft_strcmp(array[0], "WE") == 0)
-		map_infos->west_texture.path = ft_strdup(array[1]);
+		map_infos->we_path = ft_strdup(array[1]);
 	else if (ft_strcmp(array[0], "EA") == 0)
-		map_infos->east_texture.path = ft_strdup(array[1]);
+		map_infos->ea_path = ft_strdup(array[1]);
 	return (SUCCESS);
 }
 
