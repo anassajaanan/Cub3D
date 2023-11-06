@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 15:26:16 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:32:04 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,9 @@ void	move_right(t_params *params);
 void	normalize_direction(double *direction);
 void	look_left(t_params *params);
 void	look_right(t_params *params);
+
+// init_images.c
+int init_images(t_params *params);
 
 
 #endif /* CUB3D_H */

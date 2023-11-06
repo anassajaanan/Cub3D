@@ -7,6 +7,7 @@ SRCS =	main.c queue.c free.c \
 		map_validation.c init.c map.c \
 		point.c line.c raycasting.c \
 		player_mouvements.c player_actions.c \
+		init_images.c 
 
 		
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
