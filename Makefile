@@ -2,7 +2,7 @@
 NAME = cub3d
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS = main.c line.c point.c
+SRCS = main.c queue.c utils.c free.c parsing.c parsing_validation.c parsing_helpers.c map_validation.c init.c
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
@@ -10,9 +10,14 @@ OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 CC = cc
 # CFLAGS = -Wall -Wextra -Werror -Imlx -g3 -fsanitize=address
 # CFLAGS = -Wall -Wextra -Werror -Imlx
-CFLAGS = -Imlx -g3 -fsanitize=address
-LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
-INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
+# CFLAGS = -Imlx
+# LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
+# INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
+# parsing flags
+CFLAGS = -g3
+LIB_FLAGS = -L./lib/libft -lft
+INCLUDES = -I./include -I./lib/libft/include
+
 AR = ar -rcs
 RM = rm -fr
 
@@ -40,7 +45,6 @@ $(NAME): $(OBJS)
 	@make -C ./lib/libft
 	@echo "\n   $(BOLD)$(CYAN)⛳️ libmlx.a $(RESET)"
 	@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET)"
-	@make -s -C ./lib/mlx
 	@sleep 3
 	@echo "      $(BOLD)✅ libmlx.a created successfully!$(RESET)"
 	@echo "\n   ⌛ Compiling $(NAME) ..." && sleep 1
@@ -61,7 +65,6 @@ clean:
 	@echo "\n   $(BOLD)🚿 Cleaning libft.a ...$(RESET_COLOR)"
 	@make clean -C ./lib/libft
 	@echo "   $(BOLD)🧹 Cleaning libmlx.a ...$(RESET_COLOR)"
-	@make clean -C ./lib/mlx
 	@echo "   $(BOLD)🗑️  Cleaning $(NAME) ...$(RESET_COLOR)"
 	@$(RM) $(OBJS_DIR)
 	@echo "\n$(GREEN)Project cleaned! ✨$(RESET)"

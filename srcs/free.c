@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   point.c                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 15:18:44 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/10/29 09:23:06 by aajaanan         ###   ########.fr       */
+/*   Created: 2023/11/04 08:41:38 by aajaanan          #+#    #+#             */
+/*   Updated: 2023/11/04 08:48:16 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-t_point	init_point(int x, int y)
+void	ft_free(void *ptr)
 {
-	t_point	point;
-	point.x = x;
-	point.y = y;
-	return (point);
+	if (ptr)
+		free(ptr);
+	ptr = NULL;
 }
 
-int	mlx_pixel_put_img(void *mlx_ptr, t_img *img_ptr, int x, int y, int color)
+void	free_split_array(char **array)
 {
-	int	pixel_index;
+	int	i;
 
-	pixel_index = y * img_ptr->size_line + x * img_ptr->bpp;
-	if (pixel_index >= 0 && pixel_index < img_ptr->size_line * img_ptr->height)
-		*(unsigned int *)(img_ptr->addr + pixel_index) = color;
-	return (0);
+	i = 0;
+	while (array[i])
+	{
+		ft_free(array[i]);
+		i++;
+	}
+	ft_free(array);
 }
