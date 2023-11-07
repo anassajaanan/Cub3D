@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 04:45:43 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:00:18 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,7 @@ static int	parse_line(t_map_infos *map_infos, char *map_line)
 	else
 	{
 		ft_printf_fd(STDERR_FILENO, "Error\n");
-		ft_printf_fd(STDERR_FILENO, "Invalid line in the map. Each line in the map \
-should start with a texture or a color definition.\n");
+		ft_printf_fd(STDERR_FILENO, "Invalid line in the map.\n");
 		return (free_split_array(array), WRONG_MAP);
 	}
 	return (free_split_array(array), SUCCESS);
@@ -135,6 +134,12 @@ int	parse_map(char *file_name, t_map_infos *map_infos)
 			&& map_infos->parsed_color_count == 2)
 			break ;
 		line = get_next_line(fd);
+	}
+	if (line == NULL)
+	{
+		ft_printf_fd(STDERR_FILENO, "Error\n");
+		ft_printf_fd(STDERR_FILENO, "Invalid map file. Please provide a valid map file.\n");
+		return (close(fd), WRONG_MAP);
 	}
 	parse_map_to_queue(fd, &map_infos->queue);
 	close(fd);

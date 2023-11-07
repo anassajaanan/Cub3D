@@ -1,8 +1,11 @@
-      C 194,217,255
+
+      C 194,217,255  
 	  
-NO ./Textures/wall.xpm
+	  
+	  NO ./Textures/wall.xpm
 
 SO ./Textures/wall1.xpm
+
 
 WE ./Textures/wall3.xpm
 

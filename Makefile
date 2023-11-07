@@ -1,5 +1,5 @@
 # Target and File Variables
-NAME = cub3d
+NAME = cub3D
 SRCS_DIR = srcs
 OBJS_DIR = objs
 SRCS =	main.c queue.c free.c \

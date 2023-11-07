@@ -6,11 +6,14 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:40:06 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:47:38 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 int	validate_arguments(int argc, char **argv)
 {
@@ -78,6 +81,12 @@ int	update_window(t_params *params)
 	return (0);
 }
 
+int	close_window(t_params *params)
+{
+	free_and_cleanup(params);
+	exit(0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_params	params;
@@ -95,6 +104,7 @@ int	main(int argc, char **argv)
 	init_colors(&params);
 	cast_rays(&params);
 	mlx_key_hook(params.win, key_hook, &params);
+	mlx_hook(params.win, 17, 1L << 17, close_window, &params);
 	mlx_loop_hook(params.mlx, update_window, &params);
 	mlx_loop(params.mlx);
 }
