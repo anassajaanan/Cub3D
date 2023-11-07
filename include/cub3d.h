@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 19:33:18 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/07 10:19:52 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,15 @@ typedef struct s_ray
 	int		hit;
 }			t_ray;
 
+typedef struct s_wall
+{
+	double	wall_height;
+	char	*wall_texture;
+	t_img	*texture_img;
+	int		texture_x;
+	int		texture_y;
+	int		wall_y;
+}			t_wall;
 
 typedef struct s_params
 {
@@ -173,12 +182,7 @@ typedef struct s_params
 	int			floor_color;
 	int			ceiling_color;
 
-	double		wall_height;
-	int			texture_x;
-	int			texture_y;
-	char		*wall_texture;
-	int			column;
-	int			wall_y;
+	t_wall		wall;
 	
 }				t_params;
 
@@ -250,6 +254,11 @@ int init_images(t_params *params);
 double		calculate_distance(double x1, double y1, double x2, double y2);
 t_fpoint	horizontal_ray_intersection(t_params *params, double angle);
 t_fpoint	vertical_ray_intersection(t_params *params, double angle);
+
+// rendering.c
+void	determine_wall_texture(t_params *params, t_ray *ray, t_wall *wall);
+void	render_wall_texture(t_params *params, t_wall *wall, int column);
+void	render_ground_and_ceiling(t_params *params, t_wall *wall, int column);
 
 
 #endif /* CUB3D_H */
