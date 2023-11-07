@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:43:28 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:40:44 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/07 10:34:56 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	init_player_pos(t_params *params, int i, int j)
 		params->player.direction = M_PI;
 	params->player.dx = cos(params->player.direction) * MOVE_SPEED;
 	params->player.dy = sin(params->player.direction) * MOVE_SPEED;
+	params->player.fov = M_PI / 3;
 }
 
 void	init_player(t_params *params)

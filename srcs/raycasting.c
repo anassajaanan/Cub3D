@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:26:34 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/07 10:28:25 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/07 10:35:20 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	cast_rays(t_params *params)
 	double	angle;
 
 	column = 0;
-	column_increment = FOV / WINDOW_WIDTH;
-	angle = params->player.direction - (FOV / 2);
+	column_increment = params->player.fov / WINDOW_WIDTH;
+	angle = params->player.direction - (params->player.fov / 2);
 	while (column < WINDOW_WIDTH)
 	{
 		ray_angle = angle + (column * column_increment);
