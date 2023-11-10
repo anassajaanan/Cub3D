@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/07 17:47:38 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 08:21:56 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ int	key_hook(int keycode, t_params *params)
 	else if (keycode == 124)
 		look_right(params);
 	else if (keycode == 13)
+	{
 		move_up(params);
+	}
 	else if (keycode == 1)
 		move_down(params);
 	else if (keycode == 0)
