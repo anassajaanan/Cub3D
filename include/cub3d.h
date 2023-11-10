@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/07 17:18:29 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 12:08:06 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define RESOLUTION 1024
 # define TILE_SIZE 64
 # define TEXTURE_SIZE 64
-# define MOVE_SPEED 20
+# define MOVE_SPEED 40
 # define ROTATE_SPEED 0.1
 
 # define HORIZONTAL 0
@@ -258,5 +258,11 @@ void					render_wall_texture(t_params *params, t_wall *wall,
 							int column);
 void					render_ground_and_ceiling(t_params *params,
 							t_wall *wall, int column);
+
+
+// hook.c
+int	key_hook(int keycode, t_params *params);
+int	update_window(t_params *params);
+int	close_window(t_params *params);
 
 #endif /* CUB3D_H */

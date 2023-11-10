@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/07 18:00:18 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 10:20:45 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,5 @@ int	parse_map(char *file_name, t_map_infos *map_infos)
 		return (close(fd), WRONG_MAP);
 	}
 	parse_map_to_queue(fd, &map_infos->queue);
-	close(fd);
-	return (SUCCESS);
+	return (close(fd), SUCCESS);
 }

@@ -4,12 +4,12 @@
 	  
 	  NO ./Textures/wall.xpm
 
-SO ./Textures/wall1.xpm
+SO ./Textures/wall6.xpm
 
 
-WE ./Textures/wall3.xpm
+WE ./Textures/wall5.xpm
 
-EA ./Textures/wall4.xpm
+EA ./Textures/wall7.xpm
 
 
 

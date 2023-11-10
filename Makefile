@@ -8,7 +8,8 @@ SRCS =	main.c queue.c free.c \
 		point.c line.c raycasting.c \
 		player_mouvements.c player_actions.c \
 		init_images.c \
-		ray_intersection.c rendering.c 
+		ray_intersection.c rendering.c \
+		hooks.c
 
 		
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
