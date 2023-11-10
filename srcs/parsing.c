@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 10:20:45 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:33:42 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,11 +136,8 @@ int	parse_map(char *file_name, t_map_infos *map_infos)
 		line = get_next_line(fd);
 	}
 	if (line == NULL)
-	{
-		ft_printf_fd(STDERR_FILENO, "Error\n");
-		ft_printf_fd(STDERR_FILENO, "Invalid map file. Please provide a valid map file.\n");
-		return (close(fd), WRONG_MAP);
-	}
+		return (close(fd), ft_printf_fd(2, "Error\n"), ft_printf_fd(2, "\
+Invalid map file. Please provide a valid map file.\n"), WRONG_MAP);
 	parse_map_to_queue(fd, &map_infos->queue);
 	return (close(fd), SUCCESS);
 }

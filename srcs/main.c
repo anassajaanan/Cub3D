@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 12:09:10 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:14:42 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ int	main(int argc, char **argv)
 	init_params(&params);
 	if (parse_and_validate(argc, argv, &params.map_infos,
 			&params.map) != SUCCESS)
+	{
+		free_and_cleanup(&params);
 		return (1);
+	}
 	params.mlx = mlx_init();
 	params.win = mlx_new_window(params.mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
 			"cub3d");

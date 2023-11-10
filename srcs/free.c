@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 08:41:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:40:22 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:16:32 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	free_2d_array(char **map)
 	int	i;
 
 	i = 0;
+	if (!map)
+		return ;
 	while (map[i])
 	{
 		ft_free(map[i]);

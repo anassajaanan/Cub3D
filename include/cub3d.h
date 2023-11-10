@@ -13,18 +13,18 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include <unistd.h>
+# include "../lib/libft/include/libft.h"
+# include "../lib/mlx/mlx.h"
+# include <errno.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <limits.h>
-# include <fcntl.h>
-# include <errno.h>
-# include <math.h>
 # include <sys/errno.h>
 # include <sys/stat.h>
 # include <sys/types.h>
-# include "../lib/libft/include/libft.h"
-# include "../lib/mlx/mlx.h"
+# include <unistd.h>
 
 # define WINDOW_WIDTH 1024
 # define WINDOW_HEIGHT 1024
@@ -259,10 +259,9 @@ void					render_wall_texture(t_params *params, t_wall *wall,
 void					render_ground_and_ceiling(t_params *params,
 							t_wall *wall, int column);
 
-
 // hook.c
-int	key_hook(int keycode, t_params *params);
-int	update_window(t_params *params);
-int	close_window(t_params *params);
+int						key_hook(int keycode, t_params *params);
+int						update_window(t_params *params);
+int						close_window(t_params *params);
 
 #endif /* CUB3D_H */

@@ -2,14 +2,14 @@
       C 194,217,255  
 	  
 	  
-	  NO ./Textures/wall.xpm
+	  NO ./Textures/wall14.xpm
 
-SO ./Textures/wall6.xpm
+SO ./Textures/wall9.xpm
 
 
-WE ./Textures/wall5.xpm
+WE ./Textures/wall12.xpm
 
-EA ./Textures/wall7.xpm
+EA ./Textures/wall8.xpm
 
 
 

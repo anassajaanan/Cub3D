@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:02:46 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/04 08:47:36 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:18:21 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	free_queue(t_queue *q)
 {
 	t_queue_node	*tmp;
 
+	if (!q)
+		return ;
 	while (q->front)
 	{
 		tmp = q->front;
