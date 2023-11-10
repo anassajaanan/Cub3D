@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 12:08:06 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:40:22 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,8 +191,7 @@ void					free_map_infos(t_map_infos *map_infos);
 int						parse_map(char *file_name, t_map_infos *map_infos);
 
 // #============# parsing_validation.c #===============#
-int						validate_colors(t_map_infos *map_infos, t_color *color,
-							char **colors);
+int						validate_colors(t_color *color, char **colors);
 int						is_valid_texture_path(char *path);
 
 // #============# parsing_helpers.c #===============#

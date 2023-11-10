@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 15:12:58 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 15:13:03 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:39:37 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	is_valid_color(t_color *color)
 	return (1);
 }
 
-int	validate_colors(t_map_infos *map_infos, t_color *color, char **colors)
+int	validate_colors(t_color *color, char **colors)
 {
 	if (!are_valid_colors(colors))
 	{

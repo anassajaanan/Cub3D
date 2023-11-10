@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:09:00 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/07 17:41:55 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:43:40 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static void	determine_vertical_texture(t_params *params, t_ray *ray,
 
 void	determine_wall_texture(t_params *params, t_ray *ray, t_wall *wall)
 {
-	t_point	index;
-
 	wall->wall_height = (WINDOW_HEIGHT * TILE_SIZE) / ray->length;
 	wall->wall_y = (WINDOW_HEIGHT / 2) - (wall->wall_height / 2);
 	if (ray->hit == HORIZONTAL)

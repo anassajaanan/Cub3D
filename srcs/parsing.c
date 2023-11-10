@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 14:33:42 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:15:27 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ comma-separated digits for the color components (e.g., 'R,G,B').\n");
 		return (WRONG_MAP);
 	}
 	colors = ft_split(array[1], ',');
-	if (validate_colors(map_infos, color, colors) == WRONG_MAP)
+	if (validate_colors(color, colors) == WRONG_MAP)
 		return (free_split_array(colors), WRONG_MAP);
 	free_split_array(colors);
 	return (SUCCESS);

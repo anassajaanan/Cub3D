@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 09:47:49 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 15:10:27 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:30:02 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ static void	add_row_to_2d_array(char **map, t_queue *queue, int *index,
 	i = 0;
 	old_row = dequeue(queue);
 	old_row_len = ft_strlen(old_row);
+	if (old_row[old_row_len - 1] == '\n')
+		old_row_len--;
 	new_row = (char *)malloc(sizeof(char) * (columns));
-	while (i < old_row_len - 1)
+	while (i < old_row_len)
 	{
 		new_row[i] = old_row[i];
 		i++;
