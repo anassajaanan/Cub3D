@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 04:54:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 03:47:19 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 09:25:47 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,7 @@ static int	has_valid_neighbors(t_map *map, int i, int j)
 	if (map->map_data[i][j + 1] == ' '
 		|| map->map_data[i][j - 1] == ' '
 		|| map->map_data[i + 1][j] == ' '
-		|| map->map_data[i - 1][j] == ' '
-		|| map->map_data[i + 1][j + 1] == ' '
-		|| map->map_data[i + 1][j - 1] == ' '
-		|| map->map_data[i - 1][j + 1] == ' '
-		|| map->map_data[i - 1][j - 1] == ' ')
+		|| map->map_data[i - 1][j] == ' ')
 		return (0);
 	return (1);
 }
@@ -41,7 +37,7 @@ static int	validate_map_element(t_map *map, int i, int j)
 	{
 		if (c != '1' && c != ' ')
 		{
-			ft_printf_fd(2, "Error\nMap is not enclosed 1\n");
+			ft_printf_fd(2, "Error\nMap is not enclosed by walls at row %d, col %d\n", i + 1, j + 1);
 			return (0);
 		}
 	}
@@ -49,8 +45,8 @@ static int	validate_map_element(t_map *map, int i, int j)
 	{
 		if (!has_valid_neighbors(map, i, j))
 		{
-			ft_printf_fd(2, "Error\nMap is not enclosed 2: row: %d, \
-col: %d\n", i, j);
+			ft_printf_fd(2, "Error\n");
+			ft_printf_fd(2, "Invalid placement of '%c' at row %d, col %d\n", c, i + 1, j + 1);
 			return (0);
 		}
 	}
@@ -93,7 +89,7 @@ int	is_valid_map(t_map *map)
 		while (map->map_data[i][j])
 		{
 			if (!is_valid_map_char(map->map_data[i][j]))
-				return (ft_printf_fd(2, "Error\nInvalid character in map: %c\n",
+				return (ft_printf_fd(2, "Error\nInvalid character in map: {%c}\n",
 						map->map_data[i][j]), 0);
 			if (map->map_data[i][j] == 'N' || map->map_data[i][j] == 'S'
 				|| map->map_data[i][j] == 'E' || map->map_data[i][j] == 'W')

@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 09:47:49 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 08:22:12 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 09:04:00 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,34 @@ static int	find_max_columns_in_queue(t_queue *queue)
 	return (max);
 }
 
-static void	add_row_to_2d_array(char **map, t_queue *queue, int *index,
-									int columns)
+// static void	add_row_to_2d_array(char **map, t_queue *queue, int *index,
+// 									int columns)
+// {
+// 	int		i;
+// 	char	*old_row;
+// 	char	*new_row;
+// 	int		old_row_len;
+
+// 	i = 0;
+// 	old_row = dequeue(queue);
+// 	old_row_len = ft_strlen(old_row);
+// 	if (old_row[old_row_len - 1] == '\n')
+// 		old_row_len--;
+// 	new_row = (char *)malloc(sizeof(char) * (columns));
+// 	while (i < old_row_len)
+// 	{
+// 		new_row[i] = old_row[i];
+// 		i++;
+// 	}
+// 	while (i < columns - 1)
+// 		new_row[i++] = ' ';
+// 	new_row[i] = '\0';
+// 	map[*index] = new_row;
+// 	(*index)++;
+// 	ft_free((void **)&old_row);
+// }
+
+void	add_row_to_2d_array(char **map, t_queue *queue, int *index, int columns)
 {
 	int		i;
 	char	*old_row;
@@ -56,20 +82,19 @@ static void	add_row_to_2d_array(char **map, t_queue *queue, int *index,
 	i = 0;
 	old_row = dequeue(queue);
 	old_row_len = ft_strlen(old_row);
-	if (old_row[old_row_len - 1] == '\n')
-		old_row_len--;
-	new_row = (char *)malloc(sizeof(char) * (columns));
+	new_row = (char *)malloc(sizeof(char) * (columns + 1));
 	while (i < old_row_len)
 	{
 		new_row[i] = old_row[i];
 		i++;
 	}
-	while (i < columns - 1)
+	while (i < columns)
 		new_row[i++] = ' ';
 	new_row[i] = '\0';
 	map[*index] = new_row;
 	(*index)++;
 	ft_free((void **)&old_row);
+	ft_printf("new_row: {%s}\n", new_row);
 }
 
 void	convert_queue_to_2d_array(t_map *map, t_queue *queue)

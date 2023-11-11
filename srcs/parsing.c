@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 06:54:12 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 08:54:55 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ static void	parse_map_to_queue(int fd, t_queue *q)
 	}
 	while (line && !is_empty_line(line))
 	{
-		enqueue(q, line);
+		enqueue(q, ft_strtrim(line, "\n"));
+		ft_free((void **)&line);
 		line = get_next_line(fd);
 	}
 	ft_free((void **)&line);
