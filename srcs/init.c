@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:43:28 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 13:52:34 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:25:53 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 static void	init_player_pos(t_params *params, int i, int j)
 {
-	params->player.x = j * TILE_SIZE + TILE_SIZE / 2;
-	params->player.y = i * TILE_SIZE + TILE_SIZE / 2;
+	// params->player.x = j * TILE_SIZE + TILE_SIZE / 2;
+	// params->player.y = i * TILE_SIZE + TILE_SIZE / 2;
+	params->player.x = j * TILE_SIZE + 10;
+	params->player.y = i * TILE_SIZE + 10;
 	if (params->map.map_data[i][j] == 'N')
 		params->player.direction = 3 * M_PI / 2;
 	else if (params->map.map_data[i][j] == 'S')

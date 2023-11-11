@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 05:33:36 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:21:49 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@
 # define TILE_SIZE 64
 # define TEXTURE_SIZE 64
 # define MOVE_SPEED 40
-# define ROTATE_SPEED 0.1
-
+# define ROTATE_SPEED 0.2
 # define HORIZONTAL 0
 # define VERTICAL 1
 
