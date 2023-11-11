@@ -29,7 +29,7 @@ else
 			line.c \
 			raycasting.c \
 			ray_intersection.c \
-			rendering.c
+			rendering.c \
 			hooks.c \
 			player_mouvements.c \
 			player_actions.c
@@ -76,9 +76,9 @@ $(NAME): $(OBJS)
 	@echo "   $(BOLD)$(CYAN)🎯 libft.a $(RESET)"
 	@make -C ./lib/libft
 	@if [ "$(UNAME_S)" = "Darwin" ]; then \
-		@echo "\n   $(BOLD)$(CYAN)⛳️ libmlx.a $(RESET)"; \
-		@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET)"; \
-		@make -s -C ./lib/mlx; \
+		echo "\n   $(BOLD)$(CYAN)⛳️ libmlx.a $(RESET)"; \
+		echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET)"; \
+		make -s -C ./lib/mlx; \
 	fi
 	@sleep 3
 	@echo "      $(BOLD)✅ libmlx.a created successfully!$(RESET)"

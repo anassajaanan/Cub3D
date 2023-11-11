@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:24:33 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 09:43:35 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:07:02 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	move_up(t_params *params)
 
 	x = (int)(params->player.x + params->player.dx) / TILE_SIZE;
 	y = (int)(params->player.y + params->player.dy) / TILE_SIZE;
-	if (params->map.map_data[y][x] != '1')
+	if (params->map.map_data[y][x] == '0')
 	{
 		params->player.x += params->player.dx;
 		params->player.y += params->player.dy;
@@ -34,7 +34,7 @@ void	move_down(t_params *params)
 
 	x = (int)(params->player.x - params->player.dx) / TILE_SIZE;
 	y = (int)(params->player.y - params->player.dy) / TILE_SIZE;
-	if (params->map.map_data[y][x] != '1')
+	if (params->map.map_data[y][x] == '0')
 	{
 		params->player.x -= params->player.dx;
 		params->player.y -= params->player.dy;
@@ -53,7 +53,7 @@ void	move_left(t_params *params)
 	cos_value = cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
 	y = (params->player.y - sin_value) - 0.0001;
 	x = (params->player.x - cos_value) - 0.0001;
-	if (params->map.map_data[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != '1')
+	if (params->map.map_data[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '0')
 	{
 		params->player.x -= cos_value;
 		params->player.y -= sin_value;
@@ -72,7 +72,7 @@ void	move_right(t_params *params)
 	cos_value = cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
 	y = (params->player.y + sin_value) - 0.0001;
 	x = (params->player.x + cos_value) - 0.0001;
-	if (params->map.map_data[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != '1')
+	if (params->map.map_data[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] == '0')
 	{
 		params->player.x += cos_value;
 		params->player.y += sin_value;

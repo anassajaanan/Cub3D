@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:43:28 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 14:20:30 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 13:52:34 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	init_player(t_params *params)
 				|| params->map.map_data[i][j] == 'W')
 			{
 				init_player_pos(params, i, j);
+				params->map.map_data[i][j] = '0';
 				return ;
 			}
 			j++;
@@ -66,8 +67,12 @@ void	init_params(t_params *params)
 	params->map_infos.ea_path = NULL;
 	params->map_infos.queue.front = NULL;
 	params->map_infos.queue.rear = NULL;
-	params->map_infos.parsed_color_count = 0;
-	params->map_infos.parsed_texture_count = 0;
+	params->map_infos.no_path_parsed = 0;
+	params->map_infos.so_path_parsed = 0;
+	params->map_infos.we_path_parsed = 0;
+	params->map_infos.ea_path_parsed = 0;
+	params->map_infos.floor_color_parsed = 0;
+	params->map_infos.ceiling_color_parsed = 0;
 	params->map.map_data = NULL;
 	params->north_texture.img = NULL;
 	params->north_texture.addr = NULL;

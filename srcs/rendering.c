@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:09:00 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 14:43:40 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:21:55 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static void	determine_horizontal_texture(t_params *params, t_ray *ray,
 	index.y = (int)(ray->y - 0.00001) / TILE_SIZE;
 	if (params->map.map_data[index.y][index.x] == '1')
 	{
-		wall->wall_texture = params->south_texture.addr;
-		wall->texture_img = &params->south_texture;
+		wall->wall_texture = params->north_texture.addr;
+		wall->texture_img = &params->north_texture;
 	}
 	else
 	{
-		wall->wall_texture = params->north_texture.addr;
-		wall->texture_img = &params->north_texture;
+		wall->wall_texture = params->south_texture.addr;
+		wall->texture_img = &params->south_texture;
 	}
 }
 
