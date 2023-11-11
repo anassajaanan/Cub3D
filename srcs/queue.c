@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:02:46 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 14:18:21 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 08:21:13 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	free_queue(t_queue *q)
 	{
 		tmp = q->front;
 		q->front = q->front->next;
-		ft_free(tmp->val);
-		ft_free(tmp);
+		ft_free((void **)&(tmp->val));
+		ft_free((void **)&tmp);
 	}
 }

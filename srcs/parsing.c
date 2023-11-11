@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 16:15:27 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 08:34:56 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	parse_map_to_queue(int fd, t_queue *q)
 	line = get_next_line(fd);
 	while (line && is_empty_line(line))
 	{
-		ft_free(line);
+		ft_free((void **)&line);
 		line = get_next_line(fd);
 	}
 	while (line && !is_empty_line(line))
@@ -83,7 +83,7 @@ static void	parse_map_to_queue(int fd, t_queue *q)
 		enqueue(q, line);
 		line = get_next_line(fd);
 	}
-	ft_free(line);
+	ft_free((void **)&line);
 }
 
 static int	parse_line(t_map_infos *map_infos, char *map_line)
@@ -126,15 +126,16 @@ int	parse_map(char *file_name, t_map_infos *map_infos)
 	while (line)
 	{
 		map_line = ft_strtrim(line, " \t\v\f\r\n");
-		ft_free(line);
+		ft_free((void **)&line);
 		if (*map_line && parse_line(map_infos, map_line) != SUCCESS)
-			return (ft_free(map_line), close(fd), WRONG_MAP);
-		ft_free(map_line);
+			return (ft_free((void **)&map_line), close(fd), WRONG_MAP);
+		ft_free((void **)&map_line);
 		if (map_infos->parsed_texture_count == 4 
 			&& map_infos->parsed_color_count == 2)
 			break ;
 		line = get_next_line(fd);
 	}
+	line = get_next_line(fd);
 	if (line == NULL)
 		return (close(fd), ft_printf_fd(2, "Error\n"), ft_printf_fd(2, "\
 Invalid map file. Please provide a valid map file.\n"), WRONG_MAP);

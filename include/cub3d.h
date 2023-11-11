@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 14:40:22 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 08:48:40 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,10 +181,10 @@ typedef struct s_params
 }						t_params;
 
 // #============# free.c #===============#
-void					ft_free(void *ptr);
+void					ft_free(void **ptr);
 void					free_split_array(char **array);
 void					free_and_cleanup(t_params *params);
-void					free_2d_array(char **map);
+void					free_2d_array(char ***map);
 void					free_map_infos(t_map_infos *map_infos);
 
 // #============# parsing.c #===============#

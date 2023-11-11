@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 09:47:49 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/10 16:30:02 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 08:22:12 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	add_row_to_2d_array(char **map, t_queue *queue, int *index,
 	new_row[i] = '\0';
 	map[*index] = new_row;
 	(*index)++;
-	ft_free(old_row);
+	ft_free((void **)&old_row);
 }
 
 void	convert_queue_to_2d_array(t_map *map, t_queue *queue)
