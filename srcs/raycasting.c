@@ -6,14 +6,11 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:26:34 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/07 17:18:18 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 05:09:38 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-#include <i386/limits.h>
-#include <limits.h>
-#include <math.h>
 
 static void	init_ray(t_params *params, t_ray *ray, t_fpoint	horizontal,
 					t_fpoint vertical)

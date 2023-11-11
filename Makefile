@@ -2,24 +2,53 @@
 NAME = cub3D
 SRCS_DIR = srcs
 OBJS_DIR = objs
-SRCS =	main.c queue.c free.c \
-		parsing.c parsing_validation.c parsing_helpers.c \
-		map_validation.c init.c map.c \
-		point.c line.c raycasting.c \
-		player_mouvements.c player_actions.c \
-		init_images.c \
-		ray_intersection.c rendering.c \
-		hooks.c
 
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S), Linux)
+	SRCS =	main.c \
+			queue.c \
+			free.c \
+			parsing.c \
+			parsing_validation.c \
+			parsing_helpers.c \
+			map_validation.c \
+			map.c
+else
+	SRCS =	main.c \
+			queue.c \
+			free.c \
+			parsing.c \
+			parsing_validation.c \
+			parsing_helpers.c \
+			map_validation.c \
+			map.c \
+			init.c \
+			init_images.c \
+			point.c \
+			line.c \
+			raycasting.c \
+			ray_intersection.c \
+			rendering.c
+			hooks.c \
+			player_mouvements.c \
+			player_actions.c
+endif
 		
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
-# Compiler and Flags
-CC = cc
-CFLAGS = -g3 -Wall -Wextra -Werror -Imlx -fsanitize=address
-LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
-INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
+ifeq ($(UNAME_S), Linux)
+	CC = gcc
+	CFLAGS = -Wall -Wextra -Werror -g3
+	LIB_FLAGS = -L./lib/libft -lft
+	INCLUDES = -I./include -I./lib/libft/include
+else
+	CC = cc
+	CFLAGS = -g3 -Wall -Wextra -Werror -Imlx -fsanitize=address
+	LIB_FLAGS = -L./lib/libft -lft -L./lib/mlx -lmlx -framework OpenGL -framework AppKit
+	INCLUDES = -I./include -I./lib/libft/include -I./lib/mlx
+endif
 
 AR = ar -rcs
 RM = rm -fr
@@ -46,9 +75,11 @@ $(NAME): $(OBJS)
 	@echo "$(YELLOW)Building $(NAME) $(ROCKET)$(RESET)"
 	@echo "   $(BOLD)$(CYAN)🎯 libft.a $(RESET)"
 	@make -C ./lib/libft
-	@echo "\n   $(BOLD)$(CYAN)⛳️ libmlx.a $(RESET)"
-	@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET)"
-	@make -s -C ./lib/mlx
+	@if [ "$(UNAME_S)" = "Darwin" ]; then \
+		@echo "\n   $(BOLD)$(CYAN)⛳️ libmlx.a $(RESET)"; \
+		@echo "      $(BOLD)⚙️  Building libmlx.a ...$(RESET)"; \
+		@make -s -C ./lib/mlx; \
+	fi
 	@sleep 3
 	@echo "      $(BOLD)✅ libmlx.a created successfully!$(RESET)"
 	@echo "\n   ⌛ Compiling $(NAME) ..." && sleep 1
@@ -68,8 +99,10 @@ clean:
 	@echo "$(YELLOW)Cleaning project $(RESET)"
 	@echo "\n   $(BOLD)🚿 Cleaning libft.a ...$(RESET_COLOR)"
 	@make clean -C ./lib/libft
-	@echo "   $(BOLD)🧹 Cleaning libmlx.a ...$(RESET_COLOR)"
-	@make clean -C ./lib/mlx
+	@if [ "$(UNAME_S)" = "Darwin" ]; then \
+		echo "   $(BOLD)🧹 Cleaning libmlx.a ...$(RESET_COLOR)"; \
+		make clean -C ./lib/mlx; \
+	fi
 	@echo "   $(BOLD)🗑️  Cleaning $(NAME) ...$(RESET_COLOR)"
 	@$(RM) $(OBJS_DIR)
 	@echo "\n$(GREEN)Project cleaned! ✨$(RESET)"

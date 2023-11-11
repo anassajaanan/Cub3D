@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 08:41:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 08:48:49 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 05:17:42 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,17 @@ void	free_and_cleanup(t_params *params)
 {
 	free_2d_array(&params->map.map_data);
 	free_map_infos(&params->map_infos);
-	if (params->window_img.img)
-		mlx_destroy_image(params->mlx, params->window_img.img);
-	if (params->north_texture.img)
-		mlx_destroy_image(params->mlx, params->north_texture.img);
-	if (params->south_texture.img)
-		mlx_destroy_image(params->mlx, params->south_texture.img);
-	if (params->west_texture.img)
-		mlx_destroy_image(params->mlx, params->west_texture.img);
-	if (params->east_texture.img)
-		mlx_destroy_image(params->mlx, params->east_texture.img);
-	if (params->win)
-		mlx_destroy_window(params->mlx, params->win);
-	ft_free((void **)&(params->mlx));
+	// if (params->window_img.img)
+	// 	mlx_destroy_image(params->mlx, params->window_img.img);
+	// if (params->north_texture.img)
+	// 	mlx_destroy_image(params->mlx, params->north_texture.img);
+	// if (params->south_texture.img)
+	// 	mlx_destroy_image(params->mlx, params->south_texture.img);
+	// if (params->west_texture.img)
+	// 	mlx_destroy_image(params->mlx, params->west_texture.img);
+	// if (params->east_texture.img)
+	// 	mlx_destroy_image(params->mlx, params->east_texture.img);
+	// if (params->win)
+	// 	mlx_destroy_window(params->mlx, params->win);
+	// ft_free((void **)&(params->mlx));
 }
