@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/06 16:41:18 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 07:03:27 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int	is_numeric(char *str)
 	int	i;
 
 	i = 0;
-	if (*str == '-')
-		str++;
 	if (*str == '\0')
 		return (0);
 	while (str[i])

@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:06 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 06:23:02 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 06:54:12 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,22 @@ a valid and accessible file path for the texture.\n");
 	return (SUCCESS);
 }
 
+int	count_commas(char *str)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == ',')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 static int	parse_color_line(t_map_infos *map_infos, char **array)
 {
 	char	**colors;
@@ -52,8 +68,8 @@ only the color identifier and the color components.\n"), WRONG_MAP);
 		color = &map_infos->floor_color;
 	else if (ft_strcmp(array[0], "C") == 0)
 		color = &map_infos->ceiling_color;
-	if (!ft_isdigit(array[1][0]) 
-		|| !ft_isdigit(array[1][ft_strlen(array[1]) - 1]))
+	// count the number of commas in the color string
+	if (count_commas(array[1]) != 2)
 	{
 		ft_printf_fd(STDERR_FILENO, "Error\n");
 		ft_printf_fd(STDERR_FILENO, "Invalid color format. Please use three \
