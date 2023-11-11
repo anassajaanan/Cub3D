@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 08:48:40 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 05:33:36 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,13 @@ typedef struct s_map_infos
 
 	t_queue				queue;
 
-	int					parsed_color_count;
-	int					parsed_texture_count;
+	int     			no_path_parsed;
+    int     			so_path_parsed;
+    int     			we_path_parsed;
+    int     			ea_path_parsed;
+    int     			floor_color_parsed;
+    int     			ceiling_color_parsed;
+
 }						t_map_infos;
 
 typedef struct s_map

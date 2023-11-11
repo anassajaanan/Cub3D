@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 05:24:09 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 06:15:16 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos,
 		convert_queue_to_2d_array(map, &map_infos->queue);
 		if (!is_valid_map(map))
 		{
-			printf("1 free 2d array\n");
+			// printf("1 free 2d array\n");
 			free_2d_array(&map->map_data);
 
-			printf("2 free 2d arrays\n");
+			// printf("2 free 2d arrays\n");
 			free_2d_array(&map->map_data);
 
-			printf("3 free 2d array\n");
+			// printf("3 free 2d array\n");
 			free_2d_array(&map->map_data);
 			free_2d_array(&map->map_data);
 			free_2d_array(&map->map_data);
@@ -62,7 +62,7 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos,
 			free_map_infos(map_infos);
 			free_map_infos(map_infos);
 			free_map_infos(map_infos);
-			printf("hhhhh strong free\n");
+			printf("Wrong Map hhh after free\n");
 			return (WRONG_MAP);
 		}
 	}
@@ -75,15 +75,22 @@ void	init_params(t_params *params)
 	params->win = NULL;
 	params->window_img.img = NULL;
 	params->window_img.addr = NULL;
+	
 	params->map_infos.so_path = NULL;
 	params->map_infos.no_path = NULL;
 	params->map_infos.we_path = NULL;
 	params->map_infos.ea_path = NULL;
 	params->map_infos.queue.front = NULL;
 	params->map_infos.queue.rear = NULL;
-	params->map_infos.parsed_color_count = 0;
-	params->map_infos.parsed_texture_count = 0;
+	params->map_infos.no_path_parsed = 0;
+	params->map_infos.so_path_parsed = 0;
+	params->map_infos.we_path_parsed = 0;
+	params->map_infos.ea_path_parsed = 0;
+	params->map_infos.floor_color_parsed = 0;
+	params->map_infos.ceiling_color_parsed = 0;
+
 	params->map.map_data = NULL;
+	
 	params->north_texture.img = NULL;
 	params->north_texture.addr = NULL;
 	params->south_texture.img = NULL;
