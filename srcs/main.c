@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 06:15:16 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 09:34:45 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,7 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos,
 	{
 		convert_queue_to_2d_array(map, &map_infos->queue);
 		if (!is_valid_map(map))
-		{
-			// printf("1 free 2d array\n");
-			free_2d_array(&map->map_data);
-
-			// printf("2 free 2d arrays\n");
-			free_2d_array(&map->map_data);
-
-			// printf("3 free 2d array\n");
-			free_2d_array(&map->map_data);
-			free_2d_array(&map->map_data);
-			free_2d_array(&map->map_data);
-			free_2d_array(&map->map_data);
-			free_map_infos(map_infos);
-			free_map_infos(map_infos);
-			free_map_infos(map_infos);
-			free_map_infos(map_infos);
-			free_map_infos(map_infos);
-			free_map_infos(map_infos);
-			free_map_infos(map_infos);
-			printf("Wrong Map hhh after free\n");
 			return (WRONG_MAP);
-		}
 	}
 	return (ret);
 }
@@ -109,10 +88,6 @@ int	main(int argc, char **argv)
 	if (parse_and_validate(argc, argv, &params.map_infos,
 			&params.map) != SUCCESS)
 	{
-		free_and_cleanup(&params);
-		free_and_cleanup(&params);
-		free_and_cleanup(&params);
-		free_and_cleanup(&params);
 		free_and_cleanup(&params);
 		return (1);
 	}

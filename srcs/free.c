@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 08:41:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 05:17:42 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/11 09:35:01 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,35 +35,6 @@ void	free_split_array(char **array)
 	}
 	ft_free((void **)&array);
 }
-
-// void	free_2d_array(char **map)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!map)
-// 		return ;
-// 	while (map && map[i])
-// 	{
-// 		ft_free((void **)&(map[i]));
-// 		i++;
-// 	}
-// 	ft_free((void **)&map);
-// }
-
-// void free_2d_array(char **map) {
-//     int i = 0;
-
-//     if (!map)
-//         return;
-
-//     while (map[i]) {
-//         ft_free((void**)&(map[i]));
-//         i++;
-//     }
-
-//     ft_free((void**)&map);
-// }
 
 void	free_2d_array(char ***map)
 {
