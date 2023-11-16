@@ -1,11 +1,10 @@
-C 245,245,245
+C   245,245,245
+F     245,245,245
 
- 155,155,155
-
-NO    ./Textures/wall42.xpm
-SO    ./Textures/wall43.xpm
-EA  ./Textures/wall44.xpm
-WE ./Textures/wall45.xpm
+NO    ./Textures/minecraft1.xpm
+SO    ./Textures/minecraft2.xpm 
+EA  ./Textures/minecraft3.xpm 
+WE ./Textures/minecraft4.xpm
 
         1111111111111111111111111
         1000000000110000000000001

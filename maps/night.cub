@@ -1,20 +1,14 @@
-NO ./Textures/wall42.xpm
+F   12,5,21
+C   71,46,101
 
-SO                    ./Textures/wall43.xpm
-
-WE ./Textures/wall44.xpm
-
-EA ./Textures/wall45.xpm
-
-
-
-F 245,245,245
-
-C 155,155,99
+NO    ./Textures/night1.xpm
+SO    ./Textures/night4.xpm 
+EA  ./Textures/night2.xpm 
+WE ./Textures/night3.xpm
 
         1111111111111111111111111
         1000000000110000000000001
-        10110000011100000100W0001
+        10110000011100000100N0001
         1001000000000000110000001
 111111111011000001110000010000001
 100000000011000001110111111111111

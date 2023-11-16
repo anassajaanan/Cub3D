@@ -1,15 +1,14 @@
-C 245,245,245
+F   23,30,35
+C     20,44,54
 
- 155,155,155
-
-NO    ./Textures/wall42.xpm
-SO    ./Textures/wall43.xpm
-EA  ./Textures/wall44.xpm
-WE ./Textures/wall45.xpm
+NO    ./Textures/moon3.xpm
+SO    ./Textures/moon2.xpm 
+EA  ./Textures/moon4.xpm 
+WE ./Textures/moon1.xpm
 
         1111111111111111111111111
         1000000000110000000000001
-        10110000011100000100W0001
+        10110000011100000100N0001
         1001000000000000110000001
 111111111011000001110000010000001
 100000000011000001110111111111111
