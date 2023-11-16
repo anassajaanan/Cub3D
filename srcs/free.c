@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 08:41:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 13:55:07 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/16 09:02:53 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	ft_free(void **ptr)
 {
 	if (ptr && *ptr)
 	{
-        free(*ptr);
-        *ptr = NULL;
-    }
+		free(*ptr);
+		*ptr = NULL;
+	}
 }
 
 void	free_split_array(char **array)
@@ -39,7 +39,7 @@ void	free_split_array(char **array)
 void	free_2d_array(char ***map)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!map || !*map)
 		return ;

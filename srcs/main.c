@@ -6,14 +6,11 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 07:43:23 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 13:59:08 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/16 09:04:07 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 int	validate_arguments(int argc, char **argv)
 {
@@ -48,14 +45,11 @@ int	parse_and_validate(int argc, char **argv, t_map_infos *map_infos,
 	return (ret);
 }
 
-
-
 int	main(int argc, char **argv)
 {
 	t_params	params;
 
-	// params = (t_params) { 0 };
-	init_params(&params);
+	params = (t_params){0};
 	if (parse_and_validate(argc, argv, &params.map_infos,
 			&params.map) != SUCCESS)
 	{

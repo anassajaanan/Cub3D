@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 03:43:28 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 16:25:53 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/16 08:59:56 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static void	init_player_pos(t_params *params, int i, int j)
 {
-	// params->player.x = j * TILE_SIZE + TILE_SIZE / 2;
-	// params->player.y = i * TILE_SIZE + TILE_SIZE / 2;
-	params->player.x = j * TILE_SIZE + 10;
-	params->player.y = i * TILE_SIZE + 10;
+	params->player.x = j * TILE_SIZE + 20;
+	params->player.y = i * TILE_SIZE + 20;
 	if (params->map.map_data[i][j] == 'N')
 		params->player.direction = 3 * M_PI / 2;
 	else if (params->map.map_data[i][j] == 'S')
@@ -55,35 +53,6 @@ void	init_player(t_params *params)
 		}
 		i++;
 	}
-}
-
-void	init_params(t_params *params)
-{
-	params->mlx = NULL;
-	params->win = NULL;
-	params->window_img.img = NULL;
-	params->window_img.addr = NULL;
-	params->map_infos.so_path = NULL;
-	params->map_infos.no_path = NULL;
-	params->map_infos.we_path = NULL;
-	params->map_infos.ea_path = NULL;
-	params->map_infos.queue.front = NULL;
-	params->map_infos.queue.rear = NULL;
-	params->map_infos.no_path_parsed = 0;
-	params->map_infos.so_path_parsed = 0;
-	params->map_infos.we_path_parsed = 0;
-	params->map_infos.ea_path_parsed = 0;
-	params->map_infos.floor_color_parsed = 0;
-	params->map_infos.ceiling_color_parsed = 0;
-	params->map.map_data = NULL;
-	params->north_texture.img = NULL;
-	params->north_texture.addr = NULL;
-	params->south_texture.img = NULL;
-	params->south_texture.addr = NULL;
-	params->west_texture.img = NULL;
-	params->west_texture.addr = NULL;
-	params->east_texture.img = NULL;
-	params->east_texture.addr = NULL;
 }
 
 void	init_colors(t_params *params)

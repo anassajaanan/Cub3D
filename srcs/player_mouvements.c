@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:24:33 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 17:27:58 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/16 09:20:18 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	move_up(t_params *params)
 
 	x = (int)(params->player.x + params->player.dx * 1.5) / TILE_SIZE;
 	y = (int)(params->player.y + params->player.dy * 1.5) / TILE_SIZE;
-	
-	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows && (params->map.map_data[y][x] == '0'))
+	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows
+		&& (params->map.map_data[y][x] == '0'))
 	{
 		params->player.x += params->player.dx;
 		params->player.y += params->player.dy;
@@ -35,7 +35,8 @@ void	move_down(t_params *params)
 
 	x = (int)(params->player.x - params->player.dx) / TILE_SIZE;
 	y = (int)(params->player.y - params->player.dy) / TILE_SIZE;
-	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows && params->map.map_data[y][x] == '0')
+	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows
+		&& params->map.map_data[y][x] == '0')
 	{
 		params->player.x -= params->player.dx;
 		params->player.y -= params->player.dy;
@@ -54,7 +55,8 @@ void	move_left(t_params *params)
 	cos_value = cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
 	y = (int)(((params->player.y - sin_value) - 0.0001) / TILE_SIZE);
 	x = (int)(((params->player.x - cos_value) - 0.0001) / TILE_SIZE);
-	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows && params->map.map_data[y][x] == '0')
+	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows
+		&& params->map.map_data[y][x] == '0')
 	{
 		params->player.x -= cos_value;
 		params->player.y -= sin_value;
@@ -73,7 +75,8 @@ void	move_right(t_params *params)
 	cos_value = cos(params->player.direction + M_PI / 2) * MOVE_SPEED;
 	y = (int)(((params->player.y + sin_value) - 0.0001) / TILE_SIZE);
 	x = (int)(((params->player.x + cos_value) - 0.0001) / TILE_SIZE);
-	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows && params->map.map_data[y][x] == '0')
+	if (x >= 0 && x < params->map.cols && y >= 0 && y < params->map.rows
+		&& params->map.map_data[y][x] == '0')
 	{
 		params->player.x += cos_value;
 		params->player.y += sin_value;

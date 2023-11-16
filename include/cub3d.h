@@ -6,25 +6,25 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:36:41 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 17:21:49 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/16 10:16:32 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "../lib/libft/include/libft.h"
-# include "../lib/mlx/mlx.h"
-# include <errno.h>
-# include <fcntl.h>
-# include <limits.h>
-# include <math.h>
-# include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
+# include <limits.h>
+# include <fcntl.h>
+# include <math.h>
+# include <errno.h>
 # include <sys/errno.h>
 # include <sys/stat.h>
 # include <sys/types.h>
-# include <unistd.h>
+# include "../lib/libft/include/libft.h"
+# include "../lib/mlx/mlx.h"
 
 # define WINDOW_WIDTH 1024
 # define WINDOW_HEIGHT 1024
@@ -103,12 +103,12 @@ typedef struct s_map_infos
 
 	t_queue				queue;
 
-	int     			no_path_parsed;
-    int     			so_path_parsed;
-    int     			we_path_parsed;
-    int     			ea_path_parsed;
-    int     			floor_color_parsed;
-    int     			ceiling_color_parsed;
+	int					no_path_parsed;
+	int					so_path_parsed;
+	int					we_path_parsed;
+	int					ea_path_parsed;
+	int					floor_color_parsed;
+	int					ceiling_color_parsed;
 
 }						t_map_infos;
 
@@ -216,21 +216,21 @@ void					init_colors(t_params *params);
 // #============# map.c #===============#
 void					convert_queue_to_2d_array(t_map *map, t_queue *queue);
 
-// point.c
+// #============# point.c #===============#
 t_point					init_point(int x, int y);
 int						mlx_pixel_put_img(t_params *params, int x, int y,
 							int color);
 
-// line.c
+// #============# line.c #===============#
 void					draw_line(t_params *params, t_point p1, t_point p2,
 							int color);
 void					draw_line_img(t_params *params, t_point p1, t_point p2,
 							int color);
 
-// raycasting.c
+// #============# raycasting.c #===============#
 void					cast_rays(t_params *params);
 
-// player_mouvements.c
+// #============# player_mouvements.c #===============#
 void					look_left(t_params *params);
 void					look_right(t_params *params);
 void					move_up(t_params *params);
@@ -238,15 +238,15 @@ void					move_down(t_params *params);
 void					move_left(t_params *params);
 void					move_right(t_params *params);
 
-// player_actions.c
+// #============# player_actions.c #===============#
 void					normalize_direction(double *direction);
 void					look_left(t_params *params);
 void					look_right(t_params *params);
 
-// init_images.c
+// #============# init_images.c #===============#
 int						init_images(t_params *params);
 
-// ray_intersections.c
+// #============# ray_intersections.c #===============#
 double					calculate_distance(double x1, double y1, double x2,
 							double y2);
 t_fpoint				horizontal_ray_intersection(t_params *params,
@@ -254,7 +254,7 @@ t_fpoint				horizontal_ray_intersection(t_params *params,
 t_fpoint				vertical_ray_intersection(t_params *params,
 							double angle);
 
-// rendering.c
+// #============# rendering.c #===============#
 void					determine_wall_texture(t_params *params, t_ray *ray,
 							t_wall *wall);
 void					render_wall_texture(t_params *params, t_wall *wall,
@@ -262,9 +262,20 @@ void					render_wall_texture(t_params *params, t_wall *wall,
 void					render_ground_and_ceiling(t_params *params,
 							t_wall *wall, int column);
 
-// hook.c
+// #============# hook.c #===============#
 int						key_hook(int keycode, t_params *params);
 int						update_window(t_params *params);
 int						close_window(t_params *params);
+
+// #============# parse_line.c #===============#
+int						handle_texture_line(t_map_infos *map_infos,
+							char ***array, int *parsed_flag, char *type);
+
+int						handle_color_line(t_map_infos *map_infos, char ***array,
+							int *parsed_flag, char *type);
+
+// #============# map_error_handling.c #===============#
+int						handle_invalid_line(char ***array, char *map_line);
+int						print_missing_elements_error(t_map_infos *map_infos);
 
 #endif /* CUB3D_H */

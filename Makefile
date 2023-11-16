@@ -19,9 +19,11 @@ else
 			queue.c \
 			free.c \
 			parsing.c \
+			parse_line.c \
 			parsing_validation.c \
 			parsing_helpers.c \
 			map_validation.c \
+			map_error_handling.c \
 			map.c \
 			init.c \
 			init_images.c \

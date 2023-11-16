@@ -6,7 +6,7 @@
 /*   By: aajaanan <aajaanan@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 04:54:38 by aajaanan          #+#    #+#             */
-/*   Updated: 2023/11/11 09:25:47 by aajaanan         ###   ########.fr       */
+/*   Updated: 2023/11/16 09:05:07 by aajaanan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static int	validate_map_element(t_map *map, int i, int j)
 	{
 		if (c != '1' && c != ' ')
 		{
-			ft_printf_fd(2, "Error\nMap is not enclosed by walls at row %d, col %d\n", i + 1, j + 1);
+			ft_printf_fd(2, "Error\nMap is not enclosed by \
+walls at row %d, col %d\n", i + 1, j + 1);
 			return (0);
 		}
 	}
@@ -46,7 +47,8 @@ static int	validate_map_element(t_map *map, int i, int j)
 		if (!has_valid_neighbors(map, i, j))
 		{
 			ft_printf_fd(2, "Error\n");
-			ft_printf_fd(2, "Invalid placement of '%c' at row %d, col %d\n", c, i + 1, j + 1);
+			ft_printf_fd(2, "Invalid placement of '%c' at \
+row %d, col %d\n", c, i + 1, j + 1);
 			return (0);
 		}
 	}
